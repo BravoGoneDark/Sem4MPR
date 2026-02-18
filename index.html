@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
+    <link rel="stylesheet" href="mainpage.css">
+    <title>F1Archives</title>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <span class="year">2025</span>
+        <a href="#" class="logo"><img src="/f1.webp" alt="Logo"></a>
+        <a href="#" class="menu" onclick="menuToggle();"></a>
+    </header>
+    <div class="banner">
+        <ul class="nav">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Circuits</a></li>
+            <li><a href="#">Drivers</a></li>
+            <li><a href="#">Calendar</a></li>
+        </ul>
+        <div class="bg-image-list">
+            <img class = "bg-image-redbull active "src="red-bull-racing-f1-logo-png_seeklogo-406796.webp" alt="RedBull Racing Logo">
+            <img class = "bg-image-mercedes  "src="mercedes-amg_petronas_f1-logo_brandlogos.net_lq7eb-512x512.webp" alt="Mercedes AMG Logo">
+            <img class = "bg-image-mclaren  "src="wp11003661.jpg" alt="McLaren F1 Logo">
+        </div>
+        <div class="content">
+            <h1>Constructors</h1>
+            <h3 class="model RedBull active">Red Bull Racing</h3>
+            <h3 class="model Mercedes" style="color: #92ff00;">Mercedes AMG Petronas</h3>
+            <h3 class="model McLaren" style="color: #ff0015;">McLaren F1 Team</h3>
+            <p>Red Bull Racing, officially Oracle Red Bull Racing, is a dominant F1 team based in Milton Keynes, UK. Founded in 2005, it has won 6 Constructors' Championships and 8 Drivers' Championships, led by Max Verstappen.  The team is known for its innovative engineering and aggressive racing strategy.</p>
+            <a href="#">Enquire</a>
+        </div>
+        <div class="gallery">
+            <div class="carousel">
+                <a class="carousel-item" href="#" onclick="changeImage('RedBull');">
+                    <img src="red-bull-racing-f1-logo-png_seeklogo-406796.webp">
+                <h4 style="color: red;">Red Bull Racing</h4></a>
+                <a class="carousel-item" href="#" onclick="changeImage('Mercedes');">
+                    <img src="mercedes-amg_petronas_f1-logo_brandlogos.net_lq7eb-512x512.webp">
+                <h4 style="color: #92ff00;">Mercedes AMG Petronas</h4></a>
+                <a class="carousel-item" href="#" onclick="changeImage('McLaren');">
+                    <img src="wp11003661.jpg">
+                <h4 style="color: #ff0015;">McLaren F1 Team</h4></a>
+            </div>
+        </div>
+        <ul class="social">
+            <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+            <li><a href="#"><i class="bi bi-instagram"></i></a></li>
+            <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+        </ul>
+    </div>
+    <script
+    src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="mainpage.js"></script>
+    <script type = "text/javascript">
+        $(document).ready(function(){
+        });
+        $('.carousel').carousel();
+    </script>
+</body>
+</html>
