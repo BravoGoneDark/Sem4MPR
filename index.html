@@ -6,46 +6,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
     <link rel="stylesheet" href="mainpage.css">
+    <link rel="stylesheet" href="cursor.css">
     <title>F1Archives</title>
 </head>
 <body>
-    <!-- Header Section -->
+
+    <!-- ══════════════════════════════════════════ -->
+    <!--        CONSTRUCTORS BANNER (original)      -->
+    <!-- ══════════════════════════════════════════ -->
     <header>
         <span class="year">2025</span>
         <a href="#" class="logo"><img src="/f1.webp" alt="Logo"></a>
         <a href="#" class="menu" onclick="menuToggle();"></a>
     </header>
-    <div class="banner">
+
+    <div class="banner" id="constructors-banner">
         <ul class="nav">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Circuits</a></li>
+            <li><a href="#">Constructors</a></li>
             <li><a href="#">Drivers</a></li>
-            <li><a href="#">Calendar</a></li>
+            <li><a href="#">Circuits</a></li>
+            <li><a href="#" class="pitwall-nav"><b>PitWall</b></a></li>
         </ul>
         <div class="bg-image-list">
-            <img class = "bg-image-redbull active "src="red-bull-racing-f1-logo-png_seeklogo-406796.webp" alt="RedBull Racing Logo">
-            <img class = "bg-image-mercedes  "src="mercedes-amg_petronas_f1-logo_brandlogos.net_lq7eb-512x512.webp" alt="Mercedes AMG Logo">
-            <img class = "bg-image-mclaren  "src="wp11003661.jpg" alt="McLaren F1 Logo">
+            <img class="bg-image-redbull active"  src="red-bull-racing-f1-logo-png_seeklogo-406796.webp" alt="RedBull Racing Logo">
+            <img class="bg-image-mercedes"        src="mercedes-amg_petronas_f1-logo_brandlogos.net_lq7eb-512x512.webp" alt="Mercedes AMG Logo">
+            <img class="bg-image-mclaren"         src="wp11003661.jpg" alt="McLaren F1 Logo">
         </div>
-        <div class="content">
+        <div class="content" id="constructors-content">
             <h1>Constructors</h1>
             <h3 class="model RedBull active">Red Bull Racing</h3>
-            <h3 class="model Mercedes" style="color: #92ff00;">Mercedes AMG Petronas</h3>
-            <h3 class="model McLaren" style="color: #ff0015;">McLaren F1 Team</h3>
-            <p>Red Bull Racing, officially Oracle Red Bull Racing, is a dominant F1 team based in Milton Keynes, UK. Founded in 2005, it has won 6 Constructors' Championships and 8 Drivers' Championships, led by Max Verstappen.  The team is known for its innovative engineering and aggressive racing strategy.</p>
+            <h3 class="model Mercedes" style="color:#92ff00;">Mercedes AMG Petronas</h3>
+            <h3 class="model McLaren"  style="color:#ff0015;">McLaren F1 Team</h3>
+            <p>Red Bull Racing, officially Oracle Red Bull Racing, is a dominant F1 team based in Milton Keynes, UK. Founded in 2005, it has won 6 Constructors' Championships and 8 Drivers' Championships, led by Max Verstappen. The team is known for its innovative engineering and aggressive racing strategy.</p>
             <a href="#">Enquire</a>
         </div>
         <div class="gallery">
-            <div class="carousel">
-                <a class="carousel-item" href="#" onclick="changeImage('RedBull');">
+            <div class="carousel" id="constructors-carousel">
+                <a class="carousel-item" href="#" onclick="changeImage('RedBull'); return false;">
                     <img src="red-bull-racing-f1-logo-png_seeklogo-406796.webp">
-                <h4 style="color: red;">Red Bull Racing</h4></a>
-                <a class="carousel-item" href="#" onclick="changeImage('Mercedes');">
+                    <h4 style="color:red;">Red Bull Racing</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeImage('Mercedes'); return false;">
                     <img src="mercedes-amg_petronas_f1-logo_brandlogos.net_lq7eb-512x512.webp">
-                <h4 style="color: #92ff00;">Mercedes AMG Petronas</h4></a>
-                <a class="carousel-item" href="#" onclick="changeImage('McLaren');">
+                    <h4 style="color:#92ff00;">Mercedes AMG Petronas</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeImage('McLaren'); return false;">
                     <img src="wp11003661.jpg">
-                <h4 style="color: #ff0015;">McLaren F1 Team</h4></a>
+                    <h4 style="color:#ff0015;">McLaren F1 Team</h4>
+                </a>
             </div>
         </div>
         <ul class="social">
@@ -54,14 +62,65 @@
             <li><a href="#"><i class="bi bi-twitter"></i></a></li>
         </ul>
     </div>
-    <script
-    src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!--            DRIVERS BANNER (new)            -->
+    <!-- ══════════════════════════════════════════ -->
+    <!--
+        TO ADD YOUR DRIVERS:
+        1. Fill in src="" on the bg-image-list imgs with your driver photos
+        2. Fill in src="" on the carousel-item imgs with your driver photos
+        3. Update the driver names in the h3 tags and carousel h4 tags
+        4. Update the `drivers` object in drivers.js with bios
+    -->
+    <div class="banner" id="drivers-banner">
+        <div class="bg-image-list drivers-bg-image-list">
+            <!-- Replace src="" with your actual driver photo paths -->
+            <img class="bg-image-driver1 active" src="maxverstappenbanner.webp" alt="Driver 1">
+            <img class="bg-image-driver2" 
+            src="george-russell-mercedes.webp" alt="Driver 2">
+            <img class="bg-image-driver3"
+            src="norrisbanner.webp" alt="Driver 3">
+        </div>
+        <div class="content" id="drivers-content">
+            <h1>Drivers</h1>
+            <!-- Update these names + colours to match your drivers -->
+            <h3 class="driver-model driver1 active" style="color: red;">Max Verstappen</h3>
+            <h3 class="driver-model driver2"        style="color:#92ff00;">George Russell</h3>
+            <h3 class="driver-model driver3"        style="color: #ff0015;">Lando Norris</h3>
+            <p id="drivers-desc">Click a driver below to learn more.</p>
+            <a href="#">Profile</a>
+        </div>
+        <div class="gallery">
+            <div class="carousel" id="drivers-carousel">
+                <a class="carousel-item" href="#" onclick="changeDriver('driver1'); return false;">
+                    <img src="maxverstappen.webp"><!-- your driver 1 photo -->
+                    <h4 style="color:var(--primary);">Driver One</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeDriver('driver2'); return false;">
+                    <img src="George00013-1024x576main.jpg">
+                    <h4 style="color:var(--primary);">Driver Two</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeDriver('driver3'); return false;">
+                    <img src="lando-norris-hero-driver.webp">
+                    <h4 style="color:var(--primary);">Driver Three</h4>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="mainpage.js"></script>
-    <script type = "text/javascript">
+    <script src="drivers.js"></script>
+    <script src="cursor.js"></script>
+    <script type="text/javascript">
         $(document).ready(function(){
+            $('#constructors-carousel').carousel();
+            $('#drivers-carousel').carousel();
         });
-        $('.carousel').carousel();
     </script>
 </body>
 </html>

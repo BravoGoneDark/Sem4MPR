@@ -146,6 +146,17 @@ header .menu.active{
     box-shadow: inset 0 0 20px rgba(0, 194, 222, 0.5);
 }
 
+.nav li a.pitwall-nav{
+    font-weight: 900;
+    color: yellow;
+    text-shadow: 0 0 8px rgba(0, 194, 222, 0.6);
+}
+
+.nav li a.pitwall-nav:hover{
+    box-shadow: inset 0 0 25px rgb(255, 255, 0);
+    text-shadow: 0 0 12px rgba(0, 194, 222, 0.9);
+}
+
 /* Banner */
 
 .banner{
@@ -356,6 +367,61 @@ header .menu.active{
 .carousel .carousel-item:nth-child(3) img{
     object-fit: contain;
 }
+
+/* Drivers banner — taller so image has full room above carousel */
+#drivers-banner {
+    min-height: 130vh;
+}
+
+/* Push gallery to very bottom, kill the upward box-shadow & blur bleeding onto image */
+#drivers-banner .gallery {
+    bottom: 0;
+    height: 20%;
+    box-shadow: 0px 10px 40px rgba(0,0,0,0.5);
+    backdrop-filter: none;
+    background: rgba(0,0,0,0.5);
+}
+
+/* Reduce glow line */
+#drivers-banner .gallery::before {
+    height: 5px;
+    filter: blur(8px);
+}
+
+/* Drivers section — .driver-model mirrors .model behaviour */
+.driver-model {
+    display: none;
+    font-family: 'Racing Sans One', cursive;
+    font-size: 1.2em;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.driver-model.active {
+    display: block;
+}
+
+/* Driver background images — portrait photos, scale like constructors */
+.drivers-bg-image-list img {
+    display: none;
+    width: auto;
+    height: auto;
+    transition: transform 0.25s ease, max-width 0.25s ease;
+}
+
+.drivers-bg-image-list img.active {
+    display: block;
+    transform: scale(1.0);
+    max-width: 40%;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+/* Per-driver scale tweaks — adjust these to taste once you add photos */
+.drivers-bg-image-list img.bg-image-driver1.active { transform: scale(0.6); }
+.drivers-bg-image-list img.bg-image-driver2.active { transform: scale(0.6); }
+.drivers-bg-image-list img.bg-image-driver3.active { transform: scale(0.7); }
 
 /* Social Media Icons */
 
