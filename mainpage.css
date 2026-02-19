@@ -18,7 +18,7 @@ body{
 /* Header */
 
 header{
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
@@ -87,7 +87,7 @@ header .menu.active{
 
 .nav{
     z-index: 1001;
-    position: absolute;
+    position: fixed;
     right: 100px;
     top: 0;
     width: 30%;
@@ -146,15 +146,12 @@ header .menu.active{
     box-shadow: inset 0 0 20px rgba(0, 194, 222, 0.5);
 }
 
-.nav li a.pitwall-nav{
-    font-weight: 900;
-    color: yellow;
-    text-shadow: 0 0 8px rgba(0, 194, 222, 0.6);
+.pitwall-nav {
+    color: yellow !important;
 }
 
-.nav li a.pitwall-nav:hover{
-    box-shadow: inset 0 0 25px rgb(255, 255, 0);
-    text-shadow: 0 0 12px rgba(0, 194, 222, 0.9);
+.pitwall-nav:hover {
+    box-shadow: inset 0 0 20px rgba(255, 255, 0, 0.5) !important;
 }
 
 /* Banner */
@@ -242,6 +239,11 @@ header .menu.active{
     max-width: 75%;
 }
 
+.banner .bg-image-list img.bg-image-ferrari.active{
+    transform: scale(0.85);
+    max-width: 75%;
+}
+
 /* Banner Content */
 
 .banner .content{
@@ -311,13 +313,23 @@ header .menu.active{
 
 /* Gallery */
 
-.banner .gallery{
+.banner .gallery::before{
     position: absolute;
     content: '';
+    left: 0;
+    bottom: 0;
+    height: 0;
+    width: 100%;
+    background: transparent;
+}
+
+/* Gallery panel */
+.banner .gallery {
+    position: absolute;
     bottom: 0;
     left: 100px;
     width: 55%;
-    height: 30%;
+    height: 34%;
     z-index: 100;
     background: transparent;
     box-shadow: 0px 10px 40px rgba(0,0,0,0.5), 0px -10px 40px rgba(0,0,0,0.5);
@@ -325,27 +337,19 @@ header .menu.active{
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
-.banner .gallery::before{
-    position: absolute;
-    content: '';
-    left: 0;
-    bottom: 0;
-    height: 10px;
-    width:100%;
-    background: var(--primary);
-    filter: blur(15px);
-}
-
+/* Carousel stays overflow:hidden so Materialize works — do NOT change this */
 .banner .gallery .carousel{
     width: 100%;
     height: 100%;
-} 
+    overflow: hidden;
+}
 
 .carousel .carousel-item{
     width: 250px;
-    cursor: pointer;
+    cursor: none !important;
 }
 
 .carousel .carousel-item img{
@@ -353,39 +357,60 @@ header .menu.active{
     object-fit: cover;
     object-position: center;
     width: 100%;
-    height: 200px;
+    height: 170px;
     display: block;
 }
 
 .carousel .carousel-item h4{
     text-align: center;
-    padding: 10px;
-    margin: -15px 0 0 0;
+    padding: 8px 10px;
+    margin: 6px 0 0 0;
     font-size: 0.85em;
     font-weight: 600;
 }
+
 .carousel .carousel-item:nth-child(3) img{
     object-fit: contain;
 }
 
-/* Drivers banner — taller so image has full room above carousel */
+/* Drivers banner — taller so background image has room above carousel */
 #drivers-banner {
-    min-height: 130vh;
+    min-height: 110vh;
 }
 
-/* Push gallery to very bottom, kill the upward box-shadow & blur bleeding onto image */
+/* ── Section dividers — full width cyan line between each banner ── */
+.section-divider {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--primary), transparent);
+    position: relative;
+    z-index: 200;
+    box-shadow: 0 0 18px rgba(0, 194, 222, 0.6), 0 0 40px rgba(0, 194, 222, 0.2);
+}
+
+/* Constructors → Drivers: tight */
+#divider-constructors-drivers {
+    margin-top: 20px;
+}
+
+/* Drivers → Circuits: reduced spacing */
+#divider-drivers-circuits {
+    margin-top: 30px;
+}
+
+/* Drivers gallery — push down from image, no upward blur bleeding */
 #drivers-banner .gallery {
-    bottom: 0;
-    height: 20%;
+    bottom: 30px;
+    height: 22%;
     box-shadow: 0px 10px 40px rgba(0,0,0,0.5);
     backdrop-filter: none;
     background: rgba(0,0,0,0.5);
+    top: auto;
+    margin-top: 60px;
 }
 
-/* Reduce glow line */
 #drivers-banner .gallery::before {
-    height: 5px;
-    filter: blur(8px);
+    height: 0;
 }
 
 /* Drivers section — .driver-model mirrors .model behaviour */
@@ -418,15 +443,70 @@ header .menu.active{
     object-fit: contain;
 }
 
-/* Per-driver scale tweaks — adjust these to taste once you add photos */
+/* Per-driver scale tweaks */
 .drivers-bg-image-list img.bg-image-driver1.active { transform: scale(0.6); }
 .drivers-bg-image-list img.bg-image-driver2.active { transform: scale(0.6); }
-.drivers-bg-image-list img.bg-image-driver3.active { transform: scale(0.7); }
+.drivers-bg-image-list img.bg-image-driver3.active { transform: scale(0.57); }
+.drivers-bg-image-list img.bg-image-driver4.active { transform: scale(0.6); }
+.drivers-bg-image-list img.bg-image-driver5.active { transform: scale(0.6); }
+.drivers-bg-image-list img.bg-image-driver6.active { transform: scale(0.6); }
+
+/* ── Circuits Banner ─────────────────────────────────────────────────────── */
+
+#circuits-banner {
+    min-height: 130vh;
+}
+
+#circuits-banner .gallery {
+    bottom: 0;
+    height: 20%;
+    box-shadow: 0px 10px 40px rgba(0,0,0,0.5);
+    backdrop-filter: none;
+    background: rgba(0,0,0,0.5);
+}
+
+#circuits-banner .gallery::before {
+    height: 5px;
+    filter: blur(8px);
+}
+
+.circuit-model {
+    display: none;
+    font-family: 'Racing Sans One', cursive;
+    font-size: 1.2em;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.circuit-model.active {
+    display: block;
+}
+
+.circuits-bg-image-list img {
+    display: none;
+    width: auto;
+    height: auto;
+    transition: transform 0.25s ease, max-width 0.25s ease;
+}
+
+.circuits-bg-image-list img.active {
+    display: block;
+    transform: scale(1.0);
+    max-width: 60%;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+/* Per-circuit scale tweaks */
+.circuits-bg-image-list img.bg-image-circuit1.active { transform: scale(0.7); }
+.circuits-bg-image-list img.bg-image-circuit2.active { transform: scale(0.7); }
+.circuits-bg-image-list img.bg-image-circuit3.active { transform: scale(0.76); }
 
 /* Social Media Icons */
 
 .social{
-    position: absolute;
+    position: fixed;
     top: 50%;
     right: 100px;
     transform: translateY(-50%);

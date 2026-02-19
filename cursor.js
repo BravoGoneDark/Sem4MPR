@@ -86,12 +86,12 @@
     draw() {
       const alpha = Math.max(0, this.life);
 
-      // Layered glow: blue-white core fading to transparent
+      // Layered glow: red-white core fading to transparent
       const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-      grad.addColorStop(0,   `rgba(220, 255, 255, ${alpha})`);
-      grad.addColorStop(0.3, `rgba(0, 194, 222, ${alpha * 0.85})`);
-      grad.addColorStop(0.7, `rgba(0, 150, 180, ${alpha * 0.35})`);
-      grad.addColorStop(1,   `rgba(0, 100, 140, 0)`);
+      grad.addColorStop(0,   `rgba(255, 200, 200, ${alpha})`);
+      grad.addColorStop(0.3, `rgba(255, 0, 0, ${alpha * 0.85})`);
+      grad.addColorStop(0.7, `rgba(180, 0, 0, ${alpha * 0.35})`);
+      grad.addColorStop(1,   `rgba(100, 0, 0, 0)`);
 
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);

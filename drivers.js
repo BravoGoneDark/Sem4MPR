@@ -24,6 +24,11 @@ const driverData = {
         name:  'Lando Norris',
         color: '#ff0015',
         bio:   'Lando Norris is a British Formula One racing driver who currently races for McLaren. He is known for his aggressive driving style and has been a consistent performer in F1.'
+    },
+    driver4: {
+        name:  'Charles Leclerc',
+        color: '#ff2800',
+        bio:   'Charles Leclerc is a Monégasque Formula 1 driver and the lead driver for Scuderia Ferrari. A pole position specialist and race winner, Leclerc is considered one of the sport\'s brightest talents.'
     }
 };
 
