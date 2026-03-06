@@ -18,7 +18,7 @@ body{
 /* Header */
 
 header{
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
     width: 100%;
@@ -65,7 +65,7 @@ header .menu{
     position: relative;
     height: 30px;
     width:30px;
-    background: url(Screenshot\ 2026-02-18\ 230315.png);
+    background: url(Images/Screenshot\ 2026-02-18\ 230315.png);
     background-size: 30px;
     background-position: center;
     filter: invert(1);
@@ -76,7 +76,7 @@ header .menu.active{
     position: relative;
     height: 30px;
     width:30px;
-    background: url(close-line.png);
+    background: url(Images/close-line.png);
     background-size: 30px;
     background-position: center;
     filter: invert(1);
@@ -87,7 +87,7 @@ header .menu.active{
 
 .nav{
     z-index: 1001;
-    position: fixed;
+    position: absolute;
     right: 100px;
     top: 0;
     width: 30%;
@@ -152,6 +152,7 @@ header .menu.active{
 
 .pitwall-nav:hover {
     box-shadow: inset 0 0 20px rgba(255, 255, 0, 0.5) !important;
+    font-weight: 500 !important;
 }
 
 /* Banner */
@@ -544,6 +545,33 @@ header .menu.active{
     box-shadow: 0 0 20px rgba(0, 194, 222, 0.5);
 }
 
+/* Invert white-background logos to show on dark theme */
+.invert-logo {
+    filter: invert(1);
+}
+
+/* New constructor bg image scales */
+.banner .bg-image-list img.bg-image-williams.active {
+    transform: scale(0.65);
+    max-width: 75%;
+    filter: invert(1);
+    position: absolute;
+    top: -5%;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.banner .bg-image-list img.bg-image-haas.active {
+    transform: scale(1.0);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-alpine.active {
+    transform: scale(0.65);
+    max-width: 75%;
+    filter: invert(1);
+    
+}
 /* Responsive adjustments */
 @media (max-width: 1024px) {
     header{
