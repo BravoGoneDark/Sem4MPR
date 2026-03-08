@@ -95,17 +95,23 @@
     <!-- ══════════════════════════════════════════ -->
     <div class="banner" id="drivers-banner">
         <div class="bg-image-list drivers-bg-image-list">
-            <img class="bg-image-driver1 active" src="Images/maxverstappenbanner.webp" alt="Driver 1">
-            <img class="bg-image-driver2"        src="Images/george-russell-mercedes.webp" alt="Driver 2">
-            <img class="bg-image-driver3"        src="Images/norrisbanner.webp" alt="Driver 3">
-            <img class="bg-image-driver4"        src="Images/leclercbanner.webp" alt="Driver 4">
+            <img class="bg-image-driver1 active" src="Images/maxverstappenbanner.webp" alt="Max Verstappen">
+            <img class="bg-image-driver2"        src="Images/george-russell-mercedes.webp" alt="George Russell">
+            <img class="bg-image-driver3"        src="Images/norrisbanner.webp" alt="Lando Norris">
+            <img class="bg-image-driver4"        src="Images/leclercbanner.webp" alt="Charles Leclerc">
+            <img class="bg-image-driver5"        src="Images/albon-background.webp" alt="Alexander Albon">
+            <img class="bg-image-driver6"        src="Images/ocon-background.webp" alt="Esteban Ocon">
+            <img class="bg-image-driver7"        src="Images/gasly-background.webp" alt="Pierre Gasly">
         </div>
         <div class="content" id="drivers-content">
             <h1>Drivers</h1>
-            <h3 class="driver-model driver1 active" style="color:blue;">Max Verstappen</h3>
+            <h3 class="driver-model driver1 active" style="color: #ff0000;">Max Verstappen</h3>
             <h3 class="driver-model driver2"        style="color:#92ff00;">George Russell</h3>
-            <h3 class="driver-model driver3"        style="color: goldenrod;">Lando Norris</h3>
-            <h3 class="driver-model driver4"        style="color:red;">Charles Leclerc</h3>
+            <h3 class="driver-model driver3"        style="color: #ff0015;">Lando Norris</h3>
+            <h3 class="driver-model driver4"        style="color: #ff2800;">Charles Leclerc</h3>
+            <h3 class="driver-model driver5"        style="color: #00A3E0;">Alexander Albon</h3>
+            <h3 class="driver-model driver6"        style="color: #E8002D;">Esteban Ocon</h3>
+            <h3 class="driver-model driver7"        style="color: #FF69B4;">Pierre Gasly</h3>
             <p id="drivers-desc">Click a driver below to learn more.</p>
             <a href="#">Profile</a>
         </div>
@@ -113,7 +119,7 @@
             <div class="carousel" id="drivers-carousel">
                 <a class="carousel-item" href="#" onclick="changeDriver('driver1'); return false;">
                     <img src="Images/maxverstappen.webp">
-                    <h4 style="color: blue;">Max Verstappen</h4>
+                    <h4 style="color: #ff0000;">Max Verstappen</h4>
                 </a>
                 <a class="carousel-item" href="#" onclick="changeDriver('driver2'); return false;">
                     <img src="Images/George00013-1024x576main.jpg">
@@ -121,11 +127,23 @@
                 </a>
                 <a class="carousel-item" href="#" onclick="changeDriver('driver3'); return false;">
                     <img src="Images/lando-norris-hero-driver.webp">
-                    <h4 style="color: goldenrod;">Lando Norris</h4>
+                    <h4 style="color: #ff0015;">Lando Norris</h4>
                 </a>
                 <a class="carousel-item" href="#" onclick="changeDriver('driver4'); return false;">
                     <img src="Images/leclerccarousel.webp">
-                    <h4 style="color:red;">Charles Leclerc</h4>
+                    <h4 style="color: #ff2800;">Charles Leclerc</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeDriver('driver5'); return false;">
+                    <img src="Images/albon-carousel-logo.webp" class="carousel-zoom-out">
+                    <h4 style="color: #00A3E0;">Alexander Albon</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeDriver('driver6'); return false;">
+                    <img src="Images/ocon-carousel-logo.webp">
+                    <h4 style="color: #E8002D;">Esteban Ocon</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeDriver('driver7'); return false;">
+                    <img src="Images/gasly-carousel-logo.webp" class="carousel-zoom-out">
+                    <h4 style="color: #FF69B4;">Pierre Gasly</h4>
                 </a>
             </div>
         </div>
@@ -180,6 +198,12 @@
             $('#constructors-carousel').carousel();
             $('#drivers-carousel').carousel();
             $('#circuits-carousel').carousel();
+
+            setTimeout(function() {
+                changeDriver('driver1');
+                changeImage('RedBull');
+                changeCircuit('circuit1');
+            }, 100);
         });
     </script>
 </body>

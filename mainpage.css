@@ -450,8 +450,13 @@ header .menu.active{
 .drivers-bg-image-list img.bg-image-driver3.active { transform: scale(0.57); }
 .drivers-bg-image-list img.bg-image-driver4.active { transform: scale(0.6); }
 .drivers-bg-image-list img.bg-image-driver5.active { transform: scale(0.6); }
-.drivers-bg-image-list img.bg-image-driver6.active { transform: scale(0.6); }
+.drivers-bg-image-list img.bg-image-driver6.active { transform: scale(0.85); }
+.drivers-bg-image-list img.bg-image-driver7.active { transform: scale(0.67); }
 
+.carousel-zoom-out {
+    object-fit: contain !important;
+    background: transparent;
+}
 /* ── Circuits Banner ─────────────────────────────────────────────────────── */
 
 #circuits-banner {

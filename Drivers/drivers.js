@@ -1,11 +1,6 @@
 /* ─── drivers.js ─────────────────────────────────────────────────────────────
    Works exactly like changeImage() in mainpage.js but scoped to the
    #drivers-banner section.
-
-   HOW TO CUSTOMISE:
-   • Add / rename keys to match your driver class names (driver1, driver2 …)
-   • Fill in the `bios` strings with real driver descriptions
-   • The `color` value controls the accent colour of that driver's h3 heading
 ──────────────────────────────────────────────────────────────────────────── */
 
 // ── Driver data — edit these ──────────────────────────────────────────────
@@ -13,7 +8,7 @@ const driverData = {
     driver1: {
         name:  'Max Verstappen',
         color: '#ff0000',
-        bio:   'Max Verstappen is a Dutch Formula One racing driver who currently races for Red Bull Racing. He is a two-time Formula One World Champion, having won the championship in 2021 and 2022.'
+        bio:   'Max Verstappen is a Dutch Formula One racing driver who currently races for Red Bull Racing. He is a four-time Formula One World Champion, having won the championship in 2021, 2022, 2023 and 2024.'
     },
     driver2: {
         name:  'George Russell',
@@ -29,6 +24,21 @@ const driverData = {
         name:  'Charles Leclerc',
         color: '#ff2800',
         bio:   'Charles Leclerc is a Monégasque Formula 1 driver and the lead driver for Scuderia Ferrari. A pole position specialist and race winner, Leclerc is considered one of the sport\'s brightest talents.'
+    },
+    driver5: {
+        name:  'Alexander Albon',
+        color: '#00A3E0',
+        bio:   'Alexander Albon is a Thai-British Formula One racing driver currently competing for Williams Racing. Known for his smooth driving style and technical feedback, Albon has been a key figure in Williams\' development.'
+    },
+    driver6: {
+        name:  'Esteban Ocon',
+        color: '#E8002D',
+        bio:   'Esteban Ocon is a French Formula One racing driver competing for Haas F1 Team. A race winner at the 2021 Hungarian Grand Prix, Ocon is known for his determination and technical racecraft.'
+    },
+    driver7: {
+        name:  'Pierre Gasly',
+        color: '#FF69B4',
+        bio:   'Pierre Gasly is a French Formula One racing driver competing for BWT Alpine F1 Team. A former race winner and one of France\'s most exciting F1 talents, Gasly is known for his speed and racecraft.'
     }
 };
 

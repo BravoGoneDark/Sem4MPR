@@ -42,7 +42,8 @@
         const targetImgClass = map[key];
 
         // Switch background images
-        const bgImages = document.querySelectorAll('.bg-image-list img');
+        // Switch background images — CHANGE THIS LINE:
+        const bgImages = document.querySelectorAll('#constructors-banner .bg-image-list img');
         bgImages.forEach(img => {
             img.classList.remove('active');
             if (targetImgClass && img.classList.contains(targetImgClass)) {
