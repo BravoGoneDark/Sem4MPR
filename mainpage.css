@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600&display=swap');
 
 *{
     margin:0;
@@ -12,7 +12,7 @@
 
 body{
     background-color: black;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Rajdhani', sans-serif;
 }
 
 /* Header */
@@ -53,7 +53,7 @@ header::after{
 }
 
 header .year{
-    font-family: 'Racing Sans One', cursive;
+    font-family: 'Orbitron', sans-serif;
     font-size: 1em;
     color: white;
     letter-spacing: 1px;
@@ -256,7 +256,7 @@ header .menu.active{
 }
 
 .banner .content h1{
-    font-family: 'Racing Sans One', cursive;
+    font-family: 'Orbitron', sans-serif;
     font-size: 4.5em;
     color: white;
     font-weight: 500;
@@ -268,7 +268,7 @@ header .menu.active{
 
 .banner .content h3{
     display: none;
-    font-family: 'Racing Sans One', cursive;
+    font-family: 'Orbitron', sans-serif;
     font-size: 1.2em;
     color: var(--primary);
     font-weight: 300;
@@ -374,6 +374,11 @@ header .menu.active{
     object-fit: contain;
 }
 
+.carousel .carousel-item img[src*="Haas-F1-Team-Logo"] {
+    object-fit: contain;
+    background: transparent;
+}
+
 /* Drivers banner — taller so background image has room above carousel */
 #drivers-banner {
     min-height: 110vh;
@@ -417,7 +422,7 @@ header .menu.active{
 /* Drivers section — .driver-model mirrors .model behaviour */
 .driver-model {
     display: none;
-    font-family: 'Racing Sans One', cursive;
+    font-family: 'Orbitron', sans-serif;
     font-size: 1.2em;
     font-weight: 300;
     letter-spacing: 1px;
@@ -478,7 +483,7 @@ header .menu.active{
 
 .circuit-model {
     display: none;
-    font-family: 'Racing Sans One', cursive;
+    font-family: 'Orbitron', sans-serif;
     font-size: 1.2em;
     font-weight: 300;
     letter-spacing: 1px;
@@ -508,6 +513,10 @@ header .menu.active{
 .circuits-bg-image-list img.bg-image-circuit1.active { transform: scale(0.7); }
 .circuits-bg-image-list img.bg-image-circuit2.active { transform: scale(0.7); }
 .circuits-bg-image-list img.bg-image-circuit3.active { transform: scale(0.76); }
+.circuits-bg-image-list img.bg-image-circuit4.active { transform: scale(0.7); }
+.circuits-bg-image-list img.bg-image-circuit5.active { transform: scale(0.7); }
+.circuits-bg-image-list img.bg-image-circuit6.active { transform: scale(0.7); }
+.circuits-bg-image-list img.bg-image-circuit7.active { transform: scale(0.7); }
 
 /* Social Media Icons */
 
@@ -567,15 +576,22 @@ header .menu.active{
 }
 
 .banner .bg-image-list img.bg-image-haas.active {
-    transform: scale(1.0);
+    transform: scale(0.6);
     max-width: 75%;
 }
 
 .banner .bg-image-list img.bg-image-alpine.active {
     transform: scale(0.65);
     max-width: 75%;
-    filter: invert(1);
-    
+    filter: invert(1);    
+}
+
+.carousel .carousel-item img[src*="BritishGrandPrix"],
+.carousel .carousel-item img[src*="JapaneseGrandPrix"],
+.carousel .carousel-item img[src*="AustralianGrandPrix"],
+.carousel .carousel-item img[src*="AbuDhabiGrandPrix"] {
+    object-fit: contain;
+    background: transparent;
 }
 /* Responsive adjustments */
 @media (max-width: 1024px) {

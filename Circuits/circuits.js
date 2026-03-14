@@ -22,6 +22,26 @@ const circuitData = {
         name:  'Italian Grand Prix',
         color: '#92ff00',
         bio:   'The Italian Grand Prix is held at Monza, a high-speed circuit known as the "Temple of Speed". The track features long straights and minimal cornering, making it one of the fastest circuits in Formula 1.'
+    },
+    circuit4: {
+        name:  'British Grand Prix',
+        color: '#00A3E0',
+        bio:   'The British Grand Prix is held at Silverstone Circuit in Northamptonshire, the birthplace of Formula 1. Home to the very first World Championship race in 1950, Silverstone is known for its high-speed sweeping corners like Copse, Maggotts, and Becketts, beloved by drivers and fans alike.'
+    },
+    circuit5: {
+        name:  'Japanese Grand Prix',
+        color: '#ff0000',
+        bio:   'The Japanese Grand Prix takes place at the legendary Suzuka Circuit, one of the few figure-of-eight tracks in motorsport. Built in 1962, Suzuka is renowned for its technical complexity, including the iconic 130R corner and the Esses section, and has been the scene of many iconic F1 championship deciders.'
+    },
+    circuit6: {
+        name:  'Australian Grand Prix',
+        color: '#00843D',
+        bio:   'The Australian Grand Prix is held on the street circuit around Albert Park Lake in Melbourne, traditionally opening the Formula 1 season. The semi-permanent circuit is known for its smooth surface, fast flowing layout, and the electric atmosphere of 100,000+ fans welcoming F1 back each year.'
+    },
+    circuit7: {
+        name:  'Abu Dhabi Grand Prix',
+        color: '#c0a060',
+        bio:   'The Abu Dhabi Grand Prix takes place at the Yas Marina Circuit on Yas Island, traditionally closing the Formula 1 season. The floodlit twilight race is known for its mix of high-speed straights, technical chicanes, and the spectacular setting around the Yas Marina, having hosted multiple championship-deciding finales.'
     }
 };
 
