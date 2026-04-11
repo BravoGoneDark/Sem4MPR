@@ -22,10 +22,10 @@
 
     <div class="banner" id="constructors-banner">
         <ul class="nav">
-            <li><a href="#constructors-banner" onclick="smoothScrollTo('constructors-banner')">Constructors</a></li>
-            <li><a href="#drivers-banner" onclick="smoothScrollTo('drivers-banner')">Drivers</a></li>
-            <li><a href="#circuits-banner" onclick="smoothScrollTo('circuits-banner')">Circuits</a></li>
-            <li><a href="#" class="analytics-nav"><b>Analytics</b></a></li>
+            <li><a href="#constructors-banner" onclick="smoothScrollTo('constructors-banner'); return false;">Constructors</a></li>
+            <li><a href="#drivers-banner" onclick="smoothScrollTo('drivers-banner'); return false;">Drivers</a></li>
+            <li><a href="#circuits-banner" onclick="smoothScrollTo('circuits-banner'); return false;">Circuits</a></li>
+            <li><a href="#f1-grid-section" class="analytics-nav" onclick="smoothScrollTo('f1-grid-section'); return false;"><b>Analytics</b></a></li>
         </ul>
         <div class="bg-image-list">
             <img class="bg-image-redbull active"  src="Images/red-bull-racing-f1-logo-png_seeklogo-406796.webp" alt="RedBull Racing Logo">
@@ -35,6 +35,9 @@
             <img class="bg-image-williams"        src="Images/615475.webp" alt="Williams Logo">
             <img class="bg-image-haas"            src="Images/Haas-F1-Team-Logo-2016-700x394.webp" alt="Haas Logo">
             <img class="bg-image-alpine"          src="Images/alpine-f1-team-logo-png_seeklogo-512230.webp" alt="Alpine Logo">
+            <img class="bg-image-cadillac"    src="Images/cadillac.png"     alt="Cadillac F1 Logo">
+            <img class="bg-image-astonmartin" src="Images/aston-martin.png" alt="Aston Martin Logo">
+            <img class="bg-image-audi"        src="Images/audi.png"         alt="Audi F1 Logo">
         </div>
         <div class="content" id="constructors-content">
             <h1>Constructors</h1>
@@ -45,6 +48,9 @@
             <h3 class="model Williams"        style="color: #00A3E0;">Williams Racing</h3>
             <h3 class="model Haas"            style="color: #E8002D;">Haas F1 Team</h3>
             <h3 class="model Alpine"          style="color: #FF69B4;">BWT Alpine F1 Team</h3>
+            <h3 class="model Cadillac"    style="color: #b0b8c1;">Cadillac F1 Team</h3>
+            <h3 class="model AstonMartin" style="color: #00594f;">Aston Martin F1 Team</h3>
+            <h3 class="model Audi"        style="color: #bb0a1e;">Audi F1 Team</h3>
             <p>Red Bull Racing, officially Oracle Red Bull Racing, is a dominant F1 team based in Milton Keynes, UK. Founded in 2005, it has won 6 Constructors' Championships and 8 Drivers' Championships, led by Max Verstappen. The team is known for its innovative engineering and aggressive racing strategy.</p>
             <a href="#">Enquire</a>
         </div>
@@ -78,6 +84,18 @@
                     <img src="Images/alpine-f1-team-logo-png_seeklogo-512230.webp" class="invert-logo">
                     <h4 style="color: #FF69B4;">BWT Alpine F1 Team</h4>
                 </a>
+                <a class="carousel-item" href="#" onclick="changeImage('Cadillac'); return false;">
+                    <img src="Images/cadillac.png">
+                    <h4 style="color: #b0b8c1;">Cadillac F1 Team</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeImage('AstonMartin'); return false;">
+                    <img src="Images/aston-martin.png">
+                    <h4 style="color: #00594f;">Aston Martin F1 Team</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeImage('Audi'); return false;">
+                    <img src="Images/audi.png">
+                    <h4 style="color: #bb0a1e;">Audi F1 Team</h4>
+                </a>
             </div>
         </div>
         <ul class="social">
@@ -100,8 +118,11 @@
             <img class="bg-image-driver3"        src="Images/norrisbanner.jpg" alt="Lando Norris">
             <img class="bg-image-driver4"        src="Images/leclercbanner.jpg" alt="Charles Leclerc">
             <img class="bg-image-driver5"        src="Images/albon-background.jpg" alt="Alexander Albon">
-            <img class="bg-image-driver6"        src="Images/ocon-background.webp" alt="Esteban Ocon">
+            <img class="bg-image-driver6"        src="Images/ocon-background.png" alt="Esteban Ocon">
             <img class="bg-image-driver7"        src="Images/gasly-background.jpg" alt="Pierre Gasly">
+            <img class="bg-image-driver8"  src="Images/valteri-bottas.png"   alt="Valtteri Bottas">
+            <img class="bg-image-driver9"  src="Images/fernando-alonso.png"  alt="Fernando Alonso">
+            <img class="bg-image-driver10" src="Images/hulkenberg.png"       alt="Nico Hulkenberg">
         </div>
         <div class="content" id="drivers-content">
             <h1>Drivers</h1>
@@ -112,6 +133,9 @@
             <h3 class="driver-model driver5"        style="color: #00A3E0;">Alexander Albon</h3>
             <h3 class="driver-model driver6"        style="color: #E8002D;">Esteban Ocon</h3>
             <h3 class="driver-model driver7"        style="color: #FF69B4;">Pierre Gasly</h3>
+            <h3 class="driver-model driver8"  style="color: #b0b8c1;">Valtteri Bottas</h3>
+            <h3 class="driver-model driver9"  style="color: #00594f;">Fernando Alonso</h3>
+            <h3 class="driver-model driver10" style="color: #e77986;">Nico Hülkenberg</h3>
             <p id="drivers-desc">Click a driver below to learn more.</p>
             <a href="#">Profile</a>
         </div>
@@ -145,6 +169,18 @@
                     <img src="Images/gasly-carousel-logo.webp" class="carousel-zoom-out">
                     <h4 style="color: #FF69B4;">Pierre Gasly</h4>
                 </a>
+                <a class="carousel-item" href="#" onclick="changeDriver('driver8'); return false;">
+                    <img src="Images/valteri-bottas-logo.png">
+                    <h4 style="color: #b0b8c1;">Valtteri Bottas</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeDriver('driver9'); return false;">
+                    <img src="Images/fernando-alonso-logo.png">
+                    <h4 style="color: #00594f;">Fernando Alonso</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeDriver('driver10'); return false;">
+                    <img src="Images/hulkenberg-logo.png">
+                    <h4 style="color: #e77986;">Nico Hülkenberg</h4>
+                </a>
             </div>
         </div>
     </div>
@@ -157,13 +193,16 @@
     <!-- ══════════════════════════════════════════ -->
     <div class="banner" id="circuits-banner">
         <div class="bg-image-list circuits-bg-image-list">
-            <img class="bg-image-circuit1 active" src="Images/monacoTrack.webp"       alt="Monaco Circuit">
-            <img class="bg-image-circuit2"        src="Images/belgianTrack.webp"      alt="Belgian Circuit">
-            <img class="bg-image-circuit3"        src="Images/monzaTrack.webp"        alt="Monza Circuit">
+            <img class="bg-image-circuit1 active" src="Images/monacoTrack.avif"       alt="Monaco Circuit">
+            <img class="bg-image-circuit2"        src="Images/belgianTrack.avif"      alt="Belgian Circuit">
+            <img class="bg-image-circuit3"        src="Images/monzaTrack.avif"        alt="Monza Circuit">
             <img class="bg-image-circuit4"        src="Images/silverstoneTrack.webp"  alt="Silverstone Circuit">
             <img class="bg-image-circuit5"        src="Images/suzukaTrack.webp"       alt="Suzuka Circuit">
             <img class="bg-image-circuit6"        src="Images/albertParktrack.webp"   alt="Albert Park Circuit">
             <img class="bg-image-circuit7"        src="Images/yasMarinaTrack.webp"    alt="Yas Marina Circuit">
+            <img class="bg-image-circuit8"  src="Images/singapore.avif"  alt="Singapore Circuit">
+            <img class="bg-image-circuit9"  src="Images/sao-paulo.avif"  alt="São Paulo Circuit">
+            <img class="bg-image-circuit10" src="Images/barcelona.avif"  alt="Barcelona Circuit">
         </div>
         <div class="content" id="circuits-content">
             <h1>Circuits</h1>
@@ -174,6 +213,9 @@
             <h3 class="circuit-model circuit5"        style="color: #ff0000;">Japanese Grand Prix</h3>
             <h3 class="circuit-model circuit6"        style="color: #00843D;">Australian Grand Prix</h3>
             <h3 class="circuit-model circuit7"        style="color: #c0a060;">Abu Dhabi Grand Prix</h3>
+            <h3 class="circuit-model circuit8"  style="color: #b0b8c1;">Singapore Grand Prix</h3>
+            <h3 class="circuit-model circuit9"  style="color: #00594f;">São Paulo Grand Prix</h3>
+            <h3 class="circuit-model circuit10" style="color: #e77986;">Spanish Grand Prix</h3>
             <p id="circuits-desc">Click a circuit below to explore the track.</p>
             <a href="#">Explore</a>
         </div>
@@ -184,7 +226,7 @@
                     <h4 style="color: red;">Grand Prix de Monaco</h4>
                 </a>
                 <a class="carousel-item" href="#" onclick="changeCircuit('circuit2'); return false;">
-                    <img src="Images/BelgianGrandPrix.webp">
+                    <img src="Images/BelgianGrandPrix.jpg">
                     <h4 style="color: darkgoldenrod;">Belgian Grand Prix</h4>
                 </a>
                 <a class="carousel-item" href="#" onclick="changeCircuit('circuit3'); return false;">
@@ -207,6 +249,18 @@
                     <img src="Images/AbuDhabiGrandPrix.jpg">
                     <h4 style="color: #c0a060;">Abu Dhabi Grand Prix</h4>
                 </a>
+                <a class="carousel-item" href="#" onclick="changeCircuit('circuit8'); return false;">
+                    <img src="Images/singapore-logo.png">
+                    <h4 style="color: #b0b8c1;">Singapore Grand Prix</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeCircuit('circuit9'); return false;">
+                    <img src="Images/sao-paulo-logo.png">
+                    <h4 style="color: #00594f;">São Paulo Grand Prix</h4>
+                </a>
+                <a class="carousel-item" href="#" onclick="changeCircuit('circuit10'); return false;">
+                    <img src="Images/barcelona-logo.png">
+                    <h4 style="color: #e77986;">Spanish Grand Prix</h4>
+                </a>
             </div>
         </div>
     </div>
@@ -214,7 +268,7 @@
     <!--            THE PADDOCK GRID                -->
     <!-- ══════════════════════════════════════════ -->
 
-    <section class="f1-grid-section">
+    <section class="f1-grid-section" id="f1-grid-section">
       <div class="f1-grid-header">
         <h2>The Paddock</h2>
         <p>Explore data, machinery &amp; moments from the pinnacle of motorsport</p>

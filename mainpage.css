@@ -355,10 +355,10 @@ header .menu.active{
     cursor: none !important;
 }
 
-.carousel .carousel-item img{
+.carousel .carousel-item img {
+    object-fit: contain;
+    background: transparent;
     border-radius: 10px;
-    object-fit: cover;
-    object-position: center;
     width: 100%;
     height: 170px;
     display: block;
@@ -374,11 +374,6 @@ header .menu.active{
 
 .carousel .carousel-item:nth-child(3) img{
     object-fit: contain;
-}
-
-.carousel .carousel-item img[src*="Haas-F1-Team-Logo"] {
-    object-fit: contain;
-    background: transparent;
 }
 
 /* Drivers banner — taller so background image has room above carousel */
@@ -458,7 +453,10 @@ header .menu.active{
 .drivers-bg-image-list img.bg-image-driver4.active { transform: scale(0.6); }
 .drivers-bg-image-list img.bg-image-driver5.active { transform: scale(0.6); }
 .drivers-bg-image-list img.bg-image-driver6.active { transform: scale(0.85); }
-.drivers-bg-image-list img.bg-image-driver7.active { transform: scale(0.67); }
+.drivers-bg-image-list img.bg-image-driver7.active { transform: scale(0.6); }
+.drivers-bg-image-list img.bg-image-driver8.active  { transform: scale(1); }
+.drivers-bg-image-list img.bg-image-driver9.active  { transform: scale(1); }
+.drivers-bg-image-list img.bg-image-driver10.active { transform: scale(1.05); }
 
 .carousel-zoom-out {
     object-fit: contain !important;
@@ -514,11 +512,27 @@ header .menu.active{
 /* Per-circuit scale tweaks */
 .circuits-bg-image-list img.bg-image-circuit1.active { transform: scale(0.7); }
 .circuits-bg-image-list img.bg-image-circuit2.active { transform: scale(0.7); }
-.circuits-bg-image-list img.bg-image-circuit3.active { transform: scale(0.76); }
-.circuits-bg-image-list img.bg-image-circuit4.active { transform: scale(0.7); }
+.circuits-bg-image-list img.bg-image-circuit3.active { transform: scale(0.75); }
+.circuits-bg-image-list img.bg-image-circuit4.active { transform: scale(0.8); }
 .circuits-bg-image-list img.bg-image-circuit5.active { transform: scale(0.7); }
-.circuits-bg-image-list img.bg-image-circuit6.active { transform: scale(0.7); }
+.circuits-bg-image-list img.bg-image-circuit6.active { transform: scale(0.95); }
 .circuits-bg-image-list img.bg-image-circuit7.active { transform: scale(0.7); }
+.circuits-bg-image-list img.bg-image-circuit8.active  { transform: scale(0.75); }
+.circuits-bg-image-list img.bg-image-circuit9.active  { transform: scale(0.72); }
+.circuits-bg-image-list img.bg-image-circuit10.active { transform: scale(0.85); }
+
+#circuits-banner::after {
+    background: radial-gradient(
+        rgba(0,0,0,0.2),
+        rgba(0,0,0,0.5),
+        rgba(0,0,0,0.8),
+        rgba(0,0,0,0.95)
+    );
+}
+
+#circuits-banner .bg-image-list img.active {
+    filter: blur(1.5px);
+}
 
 /* Social Media Icons */
 
@@ -588,12 +602,19 @@ header .menu.active{
     filter: invert(1);    
 }
 
-.carousel .carousel-item img[src*="BritishGrandPrix"],
-.carousel .carousel-item img[src*="JapaneseGrandPrix"],
-.carousel .carousel-item img[src*="AustralianGrandPrix"],
-.carousel .carousel-item img[src*="AbuDhabiGrandPrix"] {
-    object-fit: contain;
-    background: transparent;
+.banner .bg-image-list img.bg-image-cadillac.active {
+    transform: scale(0.7);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-astonmartin.active {
+    transform: scale(0.75);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-audi.active {
+    transform: scale(0.55);
+    max-width: 75%;
 }
 
 /* ── THE PADDOCK GRID ── */
@@ -921,6 +942,157 @@ header .menu.active{
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── INFO POPUP OVERLAY ── */
+.info-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.info-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.info-popup {
+    position: relative;
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    border-top: 3px solid var(--primary);
+    max-width: 580px;
+    width: 90%;
+    padding: 44px 48px 40px;
+    transform: scale(0.92) translateY(16px);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.35s ease;
+    opacity: 0;
+}
+
+.info-overlay.visible .info-popup {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+/* top-right item label */
+.info-popup-label {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    font-family: monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--primary);
+    text-transform: uppercase;
+    opacity: 0.7;
+    max-width: 55%;
+    text-align: right;
+}
+
+/* left accent line */
+.info-popup::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 3px;
+    height: 60%;
+    background: linear-gradient(var(--primary), var(--primary), transparent);
+}
+
+.info-popup-section {
+    font-family: monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.7;
+}
+
+.info-popup-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    color: #fff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.info-popup-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--primary);
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.info-popup-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    color: #aaa;
+    line-height: 1.85;
+    letter-spacing: 0.3px;
+}
+
+.info-popup-close {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    background: transparent;
+    border: none;
+    color: #444;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 4px 0;
+}
+
+.info-popup-close:hover {
+    color: #fff;
+}
+
+.info-popup-topright {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.info-popup-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    opacity: 0.85;
+    filter: brightness(1.2);
+}
+
+.info-popup-label {
+    font-family: monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--primary);
+    text-transform: uppercase;
+    opacity: 0.7;
+    text-align: right;
 }
 
 @media (max-width: 768px) {
