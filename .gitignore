@@ -1,0 +1,16 @@
+# Frontend (React/Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/.eslintcache
+
+# Backend (Python)
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+cache/
+
+# OS generated files
+.DS_Store
+desktop.ini
