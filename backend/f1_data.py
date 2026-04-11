@@ -71,7 +71,7 @@ def get_telemetry_comparison(year: int, round_number: int, session_type: str,
 
     base_driver = drivers[0]
     result["delta"] = {}
-    for driver in drivers[1:]:
+    for driver in list(tels.keys())[1:]:
         result["delta"][driver] = _compute_delta(
             tels[base_driver], tels[driver], common_dist
         )
@@ -83,8 +83,8 @@ def get_telemetry_comparison(year: int, round_number: int, session_type: str,
     }
 
     result["meta"] = {}
-    for driver in drivers:
-        result["meta"][driver] = {
+    for driver in tels.keys():
+        result["meta"][driver] =  {
             "lapTime": str(laps[driver]["LapTime"]),
             "compound": laps[driver].get("Compound", "N/A"),
         }
@@ -94,6 +94,18 @@ def get_telemetry_comparison(year: int, round_number: int, session_type: str,
 
     return result
 
+def get_driver_laps(year: int, round_number: int, session_type: str, driver: str):
+    session = fastf1.get_session(year, round_number, session_type)
+    session.load(telemetry=False, weather=False, messages=False)
+    laps = session.laps.pick_drivers(driver)[
+        ["LapNumber", "LapTime", "Compound", "IsPersonalBest"]
+    ].dropna(subset=["LapNumber", "LapTime"]).copy()
+    laps["LapNumber"] = laps["LapNumber"].astype(int)
+    laps["LapTimeSeconds"] = laps["LapTime"].dt.total_seconds()
+    laps["LapTimeStr"] = laps["LapTime"].apply(
+        lambda t: f"{int(t.total_seconds() // 60)}:{t.total_seconds() % 60:06.3f}"
+    )
+    return laps[["LapNumber", "LapTimeStr", "Compound", "IsPersonalBest"]].sort_values("LapNumber").to_dict("records")
 
 def _compute_delta(tel1, tel2, common_dist):
     def dist_to_time(tel):

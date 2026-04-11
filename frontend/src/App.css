@@ -372,3 +372,102 @@ select option {
 .meta-bar {
   flex-wrap: wrap;
 }
+
+/* LAP SELECTOR */
+.lap-selector {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: #0a0a0a;
+  border: 1px solid #1e1e1e;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.lap-selector .control-label {
+  padding-top: 6px;
+  white-space: nowrap;
+}
+
+.lap-toggle {
+  display: flex;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.lap-toggle-btn {
+  background: transparent;
+  border: none;
+  color: #444;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-right: 1px solid #1e1e1e;
+}
+
+.lap-toggle-btn:last-child {
+  border-right: none;
+}
+
+.lap-toggle-btn:hover:not(:disabled):not(.active) {
+  background: #111;
+  color: #888;
+}
+
+.lap-toggle-btn.active {
+  background: #e8002d;
+  color: #fff;
+}
+
+.lap-toggle-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.lap-dropdown-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lap-dropdown {
+  background: #111;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 7px 12px;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 280px;
+}
+
+.lap-dropdown:focus {
+  border-color: #333;
+}
+
+.lap-loading {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  color: #333;
+  letter-spacing: 1px;
+  padding: 8px 0;
+}
+
+.lap-hint {
+  font-size: 11px;
+  color: #333;
+  letter-spacing: 0.5px;
+}

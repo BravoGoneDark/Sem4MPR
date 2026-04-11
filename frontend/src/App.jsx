@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchSchedule, fetchDrivers, fetchTelemetry } from "./api";
-import TelemetryChart from "./components/TelemetryChart";
+import { fetchSchedule, fetchDrivers, fetchTelemetry, fetchDriverLaps } from "./api";import TelemetryChart from "./components/TelemetryChart";
 import DeltaChart from "./components/DeltaChart";
 import "./App.css";
 
@@ -12,8 +11,11 @@ export default function App() {
   const [selectedDrivers, setSelectedDrivers] = useState([]);
   const [telemetry, setTelemetry] = useState(null); 
   const [loading, setLoading] = useState(false);
-
   const [driverColors, setDriverColors] = useState({});
+  const [lapMode, setLapMode] = useState("fastest");   // "fastest" | "specific"
+  const [availableLaps, setAvailableLaps] = useState([]);
+  const [selectedLap, setSelectedLap] = useState("");
+  const [lapsLoading, setLapsLoading] = useState(false);
 
 useEffect(() => {
     fetchSchedule().then(setSchedule);
@@ -59,9 +61,26 @@ const onSessionChange = async (s) => {
 const onCompare = async () => {
   setLoading(true);
   setTelemetry(null);
-  const data = await fetchTelemetry(2024, selectedRound, session, selectedDrivers);
-  setTelemetry(data);
-  setLoading(false);
+  try {
+    const lap = lapMode === "fastest" ? "fastest" : selectedLap;
+    const data = await fetchTelemetry(2024, selectedRound, session, selectedDrivers, lap);
+    setTelemetry(data);
+  } catch (err) {
+    console.error("Telemetry fetch failed:", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const onLapModeChange = async (mode) => {
+  setLapMode(mode);
+  setSelectedLap("");
+  if (mode === "specific" && selectedDrivers.length > 0 && selectedRound) {
+    setLapsLoading(true);
+    const laps = await fetchDriverLaps(selectedRound, session, selectedDrivers[0]);
+    setAvailableLaps(laps);
+    setLapsLoading(false);
+  }
 };
 
 const getColor = (abbr) => driverColors[abbr] || "#888888";
@@ -100,8 +119,12 @@ const getColor = (abbr) => driverColors[abbr] || "#888888";
   <button
     className="compare-btn"
     onClick={onCompare}
-    disabled={selectedDrivers.length < 2 || !selectedRound || loading}
-  >
+disabled={
+  selectedDrivers.length < 2 ||
+  !selectedRound ||
+  loading ||
+  (lapMode === "specific" && !selectedLap)
+}  >
     {loading ? "Loading..." : "Compare Laps"}
   </button>
 </div>
@@ -137,6 +160,55 @@ const getColor = (abbr) => driverColors[abbr] || "#888888";
       })}
     </div>
   </div>
+)}  
+
+{drivers.length > 0 && (
+  <div className="lap-selector">
+    <span className="control-label">Lap</span>
+    <div className="lap-toggle">
+      <button
+        className={`lap-toggle-btn ${lapMode === "fastest" ? "active" : ""}`}
+        onClick={() => onLapModeChange("fastest")}
+      >
+        Fastest
+      </button>
+      <button
+        className={`lap-toggle-btn ${lapMode === "specific" ? "active" : ""}`}
+        onClick={() => onLapModeChange("specific")}
+        disabled={selectedDrivers.length === 0}
+      >
+        Specific Lap
+      </button>
+    </div>
+
+    {lapMode === "specific" && (
+      <div className="lap-dropdown-wrap">
+        {lapsLoading ? (
+          <span className="lap-loading">Loading laps...</span>
+        ) : (
+          <select
+            className="lap-dropdown"
+            value={selectedLap}
+            onChange={e => setSelectedLap(e.target.value)}
+          >
+            <option value="">— Pick a lap —</option>
+            {availableLaps.map(l => (
+              <option key={l.LapNumber} value={l.LapNumber}>
+                Lap {l.LapNumber} · {l.LapTimeStr}
+                {l.IsPersonalBest ? " ★" : ""}
+                {l.Compound ? ` · ${l.Compound}` : ""}
+              </option>
+            ))}
+          </select>
+        )}
+        {selectedDrivers.length > 1 && (
+          <span className="lap-hint">
+            Laps shown for {selectedDrivers[0]} · other drivers will use the same lap number
+          </span>
+        )}
+      </div>
+    )}
+  </div>
 )}
 
       {loading && (
@@ -157,7 +229,7 @@ const getColor = (abbr) => driverColors[abbr] || "#888888";
           </span>
           <span className="meta-driver" style={{ color: getColor(drv) }}>{drv}</span>
           <span className="meta-laptime">
-            {telemetry.meta[drv]?.lapTime?.slice(11, 22)}
+            {telemetry.meta[drv]?.lapTime?.slice(11, 22) ?? "NO TIME"}
           </span>
           <span className="meta-label">{telemetry.meta[drv]?.compound}</span>
         </div>

@@ -11,3 +11,6 @@ export const fetchTelemetry = (year, round, session, drivers, lap = "fastest") =
   drivers.forEach(d => params.append("drivers", d));
   return fetch(`${BASE}/telemetry?${params}`).then(r => r.json());
 };
+
+export const fetchDriverLaps = (round, session, driver) =>
+  fetch(`${BASE}/laps/2024/${round}/${session}/${driver}`).then(r => r.json());

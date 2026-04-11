@@ -22,5 +22,10 @@ def telemetry():
     lap_selector = request.args.get("lap", "fastest")
     return jsonify(get_telemetry_comparison(year, round_number, session, drivers, lap_selector))
 
+@app.route("/laps/<int:year>/<int:round_number>/<session_type>/<driver>")
+def driver_laps(year, round_number, session_type, driver):
+    from f1_data import get_driver_laps
+    return jsonify(get_driver_laps(year, round_number, session_type, driver))
+
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
