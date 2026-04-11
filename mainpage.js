@@ -74,3 +74,64 @@
         const p = document.querySelector('#constructors-content p');
         if (p) p.textContent = paragraphs[key] || '';
     }
+
+/* ── PADDOCK CARD EXPANSION ── */
+(function() {
+    function expandCard(id) {
+        var grid = document.getElementById('cardsGrid');
+        var target = document.getElementById('card-' + id);
+        if (!target || target.classList.contains('active')) return;
+        document.querySelectorAll('.p-card').forEach(function(c) {
+            c.classList.remove('active');
+        });
+        grid.classList.add('has-active');
+        target.classList.add('active');
+        setTimeout(function() {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 50);
+    }
+
+    function collapseCards() {
+        var grid = document.getElementById('cardsGrid');
+        if (!grid) return;
+        grid.classList.remove('has-active');
+        document.querySelectorAll('.p-card').forEach(function(c) {
+            c.classList.remove('active');
+        });
+    }
+
+    // Wire up after DOM ready — bypasses Materialize event interference
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // Card clicks
+        ['pitwall', 'models', 'replay'].forEach(function(id) {
+            var card = document.getElementById('card-' + id);
+            if (!card) return;
+            card.addEventListener('click', function(e) {
+                // Don't expand if clicking the close button
+                if (e.target.closest('.card-btn-close')) return;
+                expandCard(id);
+            });
+        });
+
+        // Close buttons
+        document.querySelectorAll('.card-btn-close').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                collapseCards();
+            });
+        });
+
+        // Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') collapseCards();
+        });
+    });
+
+    // expose collapseCards globally in case inline onclick still exists anywhere
+    window.collapseCards = function(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
+        collapseCards();
+    };
+    window.expandCard = expandCard;
+})();

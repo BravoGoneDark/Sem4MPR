@@ -25,7 +25,7 @@
             <li><a href="#constructors-banner" onclick="smoothScrollTo('constructors-banner')">Constructors</a></li>
             <li><a href="#drivers-banner" onclick="smoothScrollTo('drivers-banner')">Drivers</a></li>
             <li><a href="#circuits-banner" onclick="smoothScrollTo('circuits-banner')">Circuits</a></li>
-            <li><a href="#" class="pitwall-nav"><b>PitWall</b></a></li>
+            <li><a href="#" class="analytics-nav"><b>Analytics</b></a></li>
         </ul>
         <div class="bg-image-list">
             <img class="bg-image-redbull active"  src="Images/red-bull-racing-f1-logo-png_seeklogo-406796.webp" alt="RedBull Racing Logo">
@@ -210,6 +210,140 @@
             </div>
         </div>
     </div>
+    <!-- ══════════════════════════════════════════ -->
+    <!--            THE PADDOCK GRID                -->
+    <!-- ══════════════════════════════════════════ -->
+
+    <section class="f1-grid-section">
+      <div class="f1-grid-header">
+        <h2>The Paddock</h2>
+        <p>Explore data, machinery &amp; moments from the pinnacle of motorsport</p>
+      </div>
+      <div class="f1-grid-divider"></div>
+
+      <div class="cards-grid" id="cardsGrid">
+
+        <!-- PITWALL -->
+        <div class="p-card" id="card-pitwall" style="--accent:#00d4ff">
+          <div class="card-image-panel">
+            <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=700&q=80" alt="Pitwall data">
+            <div class="card-image-tag">Race Intelligence</div>
+          </div>
+          <div class="card-content-panel">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div class="card-sub-tag">Live Intelligence</div>
+            <div class="card-title">Pitwall</div>
+            <div class="card-summary">Race statistics, championship standings, and telemetry data across every season on the grid.</div>
+            <div class="card-expanded-text">
+              The Pitwall is your race engineer's view of Formula 1. Every data point from every season — lap-by-lap breakdowns, sector comparisons, championship momentum swings, and pit strategy timelines — distilled into one command center.<br><br>
+              Whether you're tracing Max Verstappen's 2023 dominance or dissecting a wet-weather battle at Spa, the Pitwall puts the numbers in context.
+            </div>
+            <div class="card-features">
+              <div class="card-feature"><div class="card-feature-dot" style="background:#00d4ff"></div>Constructor &amp; driver championship standings</div>
+              <div class="card-feature"><div class="card-feature-dot" style="background:#00d4ff"></div>Sector-by-sector lap time breakdowns</div>
+              <div class="card-feature"><div class="card-feature-dot" style="background:#00d4ff"></div>Head-to-head telemetry comparisons</div>
+              <div class="card-feature"><div class="card-feature-dot" style="background:#00d4ff"></div>Pit stop strategy &amp; undercut timelines</div>
+            </div>
+            <button class="card-cta">
+              Access data
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <div class="card-action-row">
+              <button class="card-btn-primary">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Open Pitwall
+              </button>
+              <button class="card-btn-close" onclick="collapseCards(event)">&#x2715; Close</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODELS -->
+        <div class="p-card" id="card-models" style="--accent:#e10600">
+          <div class="card-image-panel">
+            <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=700&q=80" alt="F1 car model">
+            <div class="card-image-tag">3D Garage</div>
+          </div>
+          <div class="card-content-panel">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#e10600" stroke-width="1.5" stroke-linecap="round">
+                <rect x="2" y="11" width="20" height="6" rx="2"/>
+                <path d="M4 11V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/>
+                <circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+              </svg>
+            </div>
+            <div class="card-sub-tag">3D Garage</div>
+            <div class="card-title">Models</div>
+            <div class="card-summary">Fully rendered 3D models of the cars that define each era of Formula 1.</div>
+            <div class="card-expanded-text">
+              Step into the garage. Every constructor on the grid has a fully interactive 3D model — inspect liveries up close, rotate around every carbon fibre detail, and compare car geometries across seasons.<br><br>
+              From the Red Bull RB19 to the Williams FW45, understand the engineering decisions that separate the front runners from the midfield.
+            </div>
+            <div class="card-features">
+              <div class="card-feature"><div class="card-feature-dot"></div>Interactive 3D models for all 7 constructors</div>
+              <div class="card-feature"><div class="card-feature-dot"></div>Rotate, zoom &amp; inspect any angle</div>
+              <div class="card-feature"><div class="card-feature-dot"></div>Livery comparisons across seasons</div>
+              <div class="card-feature"><div class="card-feature-dot"></div>Engineering detail annotations</div>
+            </div>
+            <button class="card-cta">
+              Enter garage
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <div class="card-action-row">
+              <button class="card-btn-primary">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Enter Garage
+              </button>
+              <button class="card-btn-close" onclick="collapseCards(event)">&#x2715; Close</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPLAY -->
+        <div class="p-card" id="card-replay" style="--accent:#ffd700">
+          <div class="card-image-panel">
+            <img src="https://images.unsplash.com/photo-1541252260730-0412e8e2108e?w=700&q=80" alt="F1 race replay">
+            <div class="card-image-tag">Race Archives</div>
+          </div>
+          <div class="card-content-panel">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-linecap="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </div>
+            <div class="card-sub-tag">Race Archives</div>
+            <div class="card-title">Replay</div>
+            <div class="card-summary">Defining moments of Formula 1 history — curated highlights and iconic overtakes.</div>
+            <div class="card-expanded-text">
+              Not just highlights — the full narrative. The Replay vault structures each moment around the race, the season, and the rivalry it belongs to. Every clip has context.<br><br>
+              Championship deciders, last-lap overtakes, safety car chaos, and the rain-soaked battles that rewrote history — all organised, searchable, and ready to watch.
+            </div>
+            <div class="card-features">
+              <div class="card-feature"><div class="card-feature-dot" style="background:#ffd700"></div>Highlight reels organised by circuit</div>
+              <div class="card-feature"><div class="card-feature-dot" style="background:#ffd700"></div>Championship-deciding moments</div>
+              <div class="card-feature"><div class="card-feature-dot" style="background:#ffd700"></div>Iconic overtakes &amp; incidents archive</div>
+              <div class="card-feature"><div class="card-feature-dot" style="background:#ffd700"></div>Full season retrospectives</div>
+            </div>
+            <button class="card-cta">
+              Watch highlights
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <div class="card-action-row">
+              <button class="card-btn-primary" style="color:#000">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#000" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Open Vault
+              </button>
+              <button class="card-btn-close" onclick="collapseCards(event)">&#x2715; Close</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
