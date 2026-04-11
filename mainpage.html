@@ -99,9 +99,9 @@
             </div>
         </div>
         <ul class="social">
-            <li><a href="#"><i class="bi bi-facebook"></i></a></li>
-            <li><a href="#"><i class="bi bi-instagram"></i></a></li>
-            <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+            <li><a href="https://www.facebook.com/Formula1" target="_blank"><i class="bi bi-facebook"></i></a></li>
+            <li><a href="https://www.instagram.com/f1" target="_blank"><i class="bi bi-instagram"></i></a></li>
+            <li><a href="https://x.com/F1" target="_blank"><i class="bi bi-twitter"></i></a></li>
         </ul>
     </div>
 
@@ -348,7 +348,7 @@
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
             <div class="card-action-row">
-              <button class="card-btn-primary">
+              <button class="card-btn-primary" onclick="window.location.href='./garage/dist/index.html'">
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 Enter Garage
               </button>
@@ -398,6 +398,54 @@
 
       </div>
     </section>
+
+    <!-- ══════════════════════════════════════════ -->
+<!--                  FOOTER                    -->
+<!-- ══════════════════════════════════════════ -->
+<footer class="f1-footer">
+    <div class="f1-footer-divider"></div>
+    <div class="f1-footer-inner">
+
+        <!-- Top row: nav left, wordmark centre -->
+        <div class="f1-footer-top-row">
+            <nav class="f1-footer-nav">
+                <a href="#constructors-banner" onclick="smoothScrollTo('constructors-banner'); return false;">Constructors</a>
+                <a href="#drivers-banner" onclick="smoothScrollTo('drivers-banner'); return false;">Drivers</a>
+                <a href="#circuits-banner" onclick="smoothScrollTo('circuits-banner'); return false;">Circuits</a>
+                <a href="#f1-grid-section" onclick="smoothScrollTo('f1-grid-section'); return false;">Analytics</a>
+            </nav>
+            <div class="f1-footer-wordmark">F1 Archives</div>
+        </div>
+
+        <!-- Quote centred -->
+        <div class="f1-footer-centre">
+            <div class="f1-footer-quote">"Straight roads are for fast cars, turns are for fast drivers."</div>
+            <div class="f1-footer-quote-attr">— Colin McRae</div>
+        </div>
+
+        <!-- Bottom row: disclaimer centre, official link right -->
+        <div class="f1-footer-bottom-row">
+            <div class="f1-footer-bottom-centre">
+                <div class="f1-footer-disclaimer">Fan-made project. Not affiliated with Formula 1, FIA, or any constructor.</div>
+                <div class="f1-footer-copyright">&copy; 2025 F1 Archives. All rights reserved.</div>
+            </div>
+            <div class="f1-footer-official">
+                <a href="https://www.formula1.com" target="_blank" class="f1-footer-official-link">
+                    Visit the official Formula 1 website
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Back to top fixed -->
+    <button class="f1-footer-top-btn" onclick="smoothScrollTo('constructors-banner')">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        Top
+    </button>
+
+</footer>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

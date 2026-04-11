@@ -21,45 +21,6 @@
     return false;
 }
 
-/* Image Change */
-
-    function changeImage(name) {
-        // Map the incoming name to the image class used in the HTML
-        const map = {
-            'redbull':  'bg-image-redbull',
-            'mercedes': 'bg-image-mercedes',
-            'mclaren':  'bg-image-mclaren',
-            'ferrari':  'bg-image-ferrari',
-            'williams': 'bg-image-williams',
-            'haas':     'bg-image-haas',
-            'alpine':   'bg-image-alpine',
-            'cadillac':    'bg-image-cadillac',
-            'astonmartin': 'bg-image-astonmartin',
-            'audi':        'bg-image-audi'
-        };
-
-        const key = String(name).toLowerCase();
-        const targetImgClass = map[key];
-
-        // Switch background images
-        // Switch background images — CHANGE THIS LINE:
-        const bgImages = document.querySelectorAll('#constructors-banner .bg-image-list img');
-        bgImages.forEach(img => {
-            img.classList.remove('active');
-            if (targetImgClass && img.classList.contains(targetImgClass)) {
-                img.classList.add('active');
-            }
-        });
-
-        // Switch the model headings
-        const models = document.querySelectorAll('.model');
-        models.forEach(m => {
-            m.classList.remove('active');
-            if (m.classList.contains(name)) {
-                m.classList.add('active');
-            }
-        });
-
         // Update paragraph text for the selected team
 const paragraphs = {
     redbull: {
@@ -102,8 +63,46 @@ const paragraphs = {
         bio:    'Audi entered F1 in 2026 as a full works constructor, taking over the Sauber entry — a team with roots back to 1993 that also ran as BMW Sauber and Alfa Romeo over the decades. Developing their own power unit from the outset, Audi brings a motorsport legacy that includes 13 Le Mans victories. Nico Hülkenberg and rookie Gabriel Bortoleto lead their maiden season on the grid.',
         detail: 'Audi\'s arrival in Formula 1 in 2026 represents one of the most significant manufacturer entries the sport has seen in a generation. The German marque took over the Sauber entry — a Swiss constructor with roots stretching back to 1993 that also competed as BMW Sauber, winning the 2008 Canadian Grand Prix, and later as Alfa Romeo Racing. Audi\'s motorsport pedigree is extraordinary: 13 victories at the Le Mans 24 Hours, dominance of the World Endurance Championship, and a legacy of engineering excellence that spans multiple disciplines. Unlike most new entrants who rely on customer power, Audi committed from the outset to developing a fully proprietary power unit under the 2026 regulations — a statement of serious long-term intent. Nico Hülkenberg, one of the most experienced drivers on the grid, leads the team alongside Brazilian rookie Gabriel Bortoleto. With the full weight of the Volkswagen Group behind them, Audi\'s Formula 1 project carries enormous expectation and resource.'
     }
-};      
+}; 
 
+/* Image Change */
+
+    function changeImage(name) {
+        // Map the incoming name to the image class used in the HTML
+        const map = {
+            'redbull':  'bg-image-redbull',
+            'mercedes': 'bg-image-mercedes',
+            'mclaren':  'bg-image-mclaren',
+            'ferrari':  'bg-image-ferrari',
+            'williams': 'bg-image-williams',
+            'haas':     'bg-image-haas',
+            'alpine':   'bg-image-alpine',
+            'cadillac':    'bg-image-cadillac',
+            'astonmartin': 'bg-image-astonmartin',
+            'audi':        'bg-image-audi'
+        };
+
+        const key = String(name).toLowerCase();
+        const targetImgClass = map[key];
+
+        // Switch background images
+        // Switch background images — CHANGE THIS LINE:
+        const bgImages = document.querySelectorAll('#constructors-banner .bg-image-list img');
+        bgImages.forEach(img => {
+            img.classList.remove('active');
+            if (targetImgClass && img.classList.contains(targetImgClass)) {
+                img.classList.add('active');
+            }
+        });
+
+        // Switch the model headings
+        const models = document.querySelectorAll('.model');
+        models.forEach(m => {
+            m.classList.remove('active');
+            if (m.classList.contains(name)) {
+                m.classList.add('active');
+            }
+        });
         const p = document.querySelector('#constructors-content p');
         if (p) p.textContent = paragraphs[key] ? paragraphs[key].bio : '';
     }

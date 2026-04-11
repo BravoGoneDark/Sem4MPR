@@ -6,7 +6,43 @@ export default function App() {
   const [selected, setSelected] = useState(null)
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ position: 'relative' }}>
+
+      {/* Back button */}
+      <button
+  onClick={() => window.location.href = '../../mainpage.html'}
+  style={{
+    position: 'absolute',
+    top: '24px',
+    right: '24px',
+    left: 'auto',
+    zIndex: 1000,
+    background: 'transparent',
+    border: '1px solid #333',
+    color: '#888',
+    fontFamily: 'Orbitron, sans-serif',
+    fontSize: '8px',
+    letterSpacing: '2px',
+    textTransform: 'uppercase',
+    padding: '10px 16px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'color 0.2s, border-color 0.2s',
+  }}
+  onMouseEnter={e => {
+    e.currentTarget.style.color = '#00c2de'
+    e.currentTarget.style.borderColor = '#00c2de'
+  }}
+  onMouseLeave={e => {
+    e.currentTarget.style.color = '#888'
+    e.currentTarget.style.borderColor = '#333'
+  }}
+>
+  F1 Archives →
+</button>
+
       <div style={{
         padding: '3rem 3rem 2rem',
         borderBottom: '1px solid rgba(0, 194, 222, 0.15)',
