@@ -4,26 +4,32 @@ import DeltaChart from "./components/DeltaChart";
 import TrackMap from "./components/TrackMap";
 import "./App.css";
 
+// Safe fallbacks — none of these are actual F1 team colors
 const FALLBACK_COLORS = [
-  "#e8002d", "#0090ff", "#00d2be", "#ff8700", 
-  "#ffffff", "#9b0000", "#00ff87", "#ff1e00"
+  "#a855f7", // purple
+  "#06b6d4", // cyan
+  "#84cc16", // lime
+  "#ec4899", // pink
+  "#f59e0b", // amber
+  "#6366f1", // indigo
+  "#14b8a6", // teal
+  "#f43f5e", // rose
 ];
 
 const buildColorMap = (data) => {
   const colors = {};
   const usedColors = new Set();
-  
+
   data.forEach((d, index) => {
-    let color = `#${d.TeamColor}`;
+    let color = `#${d.TeamColor}`.toLowerCase(); // normalize case
     if (usedColors.has(color)) {
-      // Same team — assign a fallback color
       const fallback = FALLBACK_COLORS.find(c => !usedColors.has(c));
       color = fallback || FALLBACK_COLORS[index % FALLBACK_COLORS.length];
     }
     usedColors.add(color);
     colors[d.Abbreviation] = color;
   });
-  
+
   return colors;
 };
 
@@ -205,7 +211,7 @@ disabled={
     <div className="driver-grid">
       {drivers.map(d => {
         const active = selectedDrivers.includes(d.Abbreviation);
-        const color = `#${d.TeamColor}`;
+        const color = driverColors[d.Abbreviation] || `#${d.TeamColor}`;
         return (
           <button
             key={d.Abbreviation}
