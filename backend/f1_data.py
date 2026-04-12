@@ -69,7 +69,7 @@ def get_telemetry_comparison(year: int, round_number: int, session_type: str,
                 )
                 result[driver][ch] = interp(common_dist).tolist()
 
-    base_driver = drivers[0]
+    base_driver = list(tels.keys())[0]
     result["delta"] = {}
     for driver in list(tels.keys())[1:]:
         result["delta"][driver] = _compute_delta(
@@ -91,6 +91,28 @@ def get_telemetry_comparison(year: int, round_number: int, session_type: str,
 
     result["drivers"] = list(tels.keys())
     result["baseDriver"] = base_driver
+
+    # Sector distances — use base driver's lap
+    try:
+        base_lap = laps[base_driver]
+        tel_base = tels[base_driver]
+        
+        s1_time = base_lap["Sector1Time"]
+        s2_time = base_lap["Sector1Time"] + base_lap["Sector2Time"]
+        
+        def time_to_distance(sector_time):
+            total_seconds = sector_time.total_seconds()
+            tel_seconds = tel_base["Time"].dt.total_seconds()
+            idx = (tel_seconds - total_seconds).abs().idxmin()
+            return float(tel_base.loc[idx, "Distance"])
+        
+        result["sectors"] = {
+            "s1": time_to_distance(s1_time),
+            "s2": time_to_distance(s2_time),
+        }
+    except Exception as e:
+        print(f"Could not compute sector distances: {e}")
+        result["sectors"] = {"s1": None, "s2": None}
 
     return result
 

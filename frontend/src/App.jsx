@@ -4,6 +4,29 @@ import DeltaChart from "./components/DeltaChart";
 import TrackMap from "./components/TrackMap";
 import "./App.css";
 
+const FALLBACK_COLORS = [
+  "#e8002d", "#0090ff", "#00d2be", "#ff8700", 
+  "#ffffff", "#9b0000", "#00ff87", "#ff1e00"
+];
+
+const buildColorMap = (data) => {
+  const colors = {};
+  const usedColors = new Set();
+  
+  data.forEach((d, index) => {
+    let color = `#${d.TeamColor}`;
+    if (usedColors.has(color)) {
+      // Same team — assign a fallback color
+      const fallback = FALLBACK_COLORS.find(c => !usedColors.has(c));
+      color = fallback || FALLBACK_COLORS[index % FALLBACK_COLORS.length];
+    }
+    usedColors.add(color);
+    colors[d.Abbreviation] = color;
+  });
+  
+  return colors;
+};
+
 export default function App() {
   const [schedule, setSchedule] = useState([]);
   const [drivers, setDrivers] = useState([]);
@@ -19,6 +42,8 @@ export default function App() {
   const [lapsLoading, setLapsLoading] = useState(false);
 const [hoverIndex, setHoverIndex] = useState(null);
 const throttleRef = useRef(null);
+
+
 
 const onHover = useCallback((index) => {
   if (throttleRef.current) return;
@@ -50,9 +75,7 @@ const onRoundChange = async (round) => {
   setTelemetry(null);
   const data = await fetchDrivers(round, session);
   setDrivers(data);
-  const colors = {};
-  data.forEach(d => { colors[d.Abbreviation] = `#${d.TeamColor}`; });
-  setDriverColors(colors);
+  setDriverColors(buildColorMap(data));
 };
 
 const onSessionChange = async (s) => {
@@ -63,9 +86,7 @@ const onSessionChange = async (s) => {
     setDrivers([]);
     const data = await fetchDrivers(selectedRound, s);
     setDrivers(data);
-    const colors = {};
-    data.forEach(d => { colors[d.Abbreviation] = `#${d.TeamColor}`; });
-    setDriverColors(colors);
+    setDriverColors(buildColorMap(data));;
   }
 };
 
@@ -76,12 +97,16 @@ const onCompare = async () => {
     const lap = lapMode === "fastest" ? "fastest" : selectedLap;
     const data = await fetchTelemetry(2024, selectedRound, session, selectedDrivers, lap);
     setTelemetry(data);
+    console.log("Sectors:", data.sectors);
   } catch (err) {
     console.error("Telemetry fetch failed:", err);
   } finally {
     setLoading(false);
   }
 };
+
+
+
 
 const onLapModeChange = async (mode) => {
   setLapMode(mode);
@@ -231,8 +256,23 @@ disabled={
 
 {telemetry && (
   <>
-    <div className="meta-bar">
-      {telemetry.drivers.map(drv => (
+  <div className="meta-bar">
+    {telemetry.drivers.map((drv, idx) => {
+      // Calculate gap vs base driver
+      const baseTime = telemetry.meta[telemetry.baseDriver]?.lapTime;
+      const drvTime = telemetry.meta[drv]?.lapTime;
+      
+      let gap = null;
+      if (drv !== telemetry.baseDriver && baseTime && drvTime) {
+        const toSeconds = (t) => {
+          const parts = t.slice(11, 22).split(":");
+          return parseFloat(parts[0]) * 60 + parseFloat(parts[1]);
+        };
+        const diff = toSeconds(drvTime) - toSeconds(baseTime);
+        gap = (diff >= 0 ? "+" : "") + diff.toFixed(3) + "s";
+      }
+
+      return (
         <div key={drv} className="meta-card"
           style={{ borderTop: `2px solid ${getColor(drv)}` }}>
           <span className="meta-label">
@@ -240,11 +280,22 @@ disabled={
           </span>
           <span className="meta-driver" style={{ color: getColor(drv) }}>{drv}</span>
           <span className="meta-laptime">
-            {telemetry.meta[drv]?.lapTime?.slice(11, 22) ?? "NO TIME"}
+            {telemetry.meta[drv]?.lapTime?.slice(11, 19) ?? "NO TIME"}
           </span>
+          {gap && (
+            <span style={{
+              fontSize: "13px",
+              fontFamily: "monospace",
+              color: gap.startsWith("+") ? "#ff4444" : "#00cc66",
+              fontWeight: "600"
+            }}>
+              {gap}
+            </span>
+          )}
           <span className="meta-label">{telemetry.meta[drv]?.compound}</span>
         </div>
-      ))}
+      );
+    })}
       <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
         <div className="legend">
           {telemetry.drivers.map(drv => (
@@ -260,9 +311,9 @@ disabled={
 
     <div className="charts-section">
       <TrackMap data={telemetry} driverColors={driverColors} hoverIndex={hoverIndex} />
-      <DeltaChart data={telemetry} driverColors={driverColors} onHover={onHover} />
+      <DeltaChart data={telemetry} driverColors={driverColors} onHover={onHover} sectors={telemetry.sectors} />
       {["Speed", "Throttle", "Brake", "RPM", "nGear"].map(ch => (
-        <TelemetryChart key={ch} data={telemetry} channel={ch} driverColors={driverColors} onHover={onHover} />
+        <TelemetryChart key={ch} data={telemetry} channel={ch} driverColors={driverColors} onHover={onHover} sectors={telemetry.sectors} />
       ))}
     </div>
   </>

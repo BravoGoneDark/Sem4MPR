@@ -1,6 +1,6 @@
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine } from "recharts";
 
-export default function DeltaChart({ data, driverColors, onHover }) {
+export default function DeltaChart({ data, driverColors, onHover, sectors }) {
 
 const handleMouseMove = (state) => {
   if (state.isTooltipActive && state.activeTooltipIndex !== undefined) {
@@ -48,6 +48,26 @@ const handleMouseLeave = () => onHover(null);
               dot={false} strokeWidth={1.5} isAnimationActive={false}
               style={{ filter: `drop-shadow(0 0 3px ${getColor(drv)})` }} />
           ))}
+
+          {sectors?.s1 && (() => {
+            const closest = chartData.reduce((prev, curr) =>
+              Math.abs(curr.dist - sectors.s1) < Math.abs(prev.dist - sectors.s1) ? curr : prev
+            );
+            return (
+              <ReferenceLine x={closest.dist} stroke="#ffffff44" strokeWidth={1} strokeDasharray="4 2"
+                label={{ value: "S2", position: "insideTopLeft", fill: "#888", fontSize: 10, fontFamily: "monospace" }} />
+            );
+          })()}
+
+          {sectors?.s2 && (() => {
+            const closest = chartData.reduce((prev, curr) =>
+              Math.abs(curr.dist - sectors.s2) < Math.abs(prev.dist - sectors.s2) ? curr : prev
+            );
+  return (
+    <ReferenceLine x={closest.dist} stroke="#ffffff44" strokeWidth={1} strokeDasharray="4 2"
+      label={{ value: "S3", position: "insideTopLeft", fill: "#888", fontSize: 10, fontFamily: "monospace" }} />
+  );
+})()}
         </LineChart>
       </ResponsiveContainer>
     </div>
