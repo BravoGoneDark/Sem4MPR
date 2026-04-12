@@ -40,8 +40,9 @@ export default function App() {
   const [availableLaps, setAvailableLaps] = useState([]);
   const [selectedLap, setSelectedLap] = useState("");
   const [lapsLoading, setLapsLoading] = useState(false);
-const [hoverIndex, setHoverIndex] = useState(null);
-const throttleRef = useRef(null);
+  const [hoverIndex, setHoverIndex] = useState(null);
+  const throttleRef = useRef(null);
+  const [year, setYear] = useState(2024);
 
 
 
@@ -54,8 +55,8 @@ const onHover = useCallback((index) => {
 }, []);
 
 useEffect(() => {
-    fetchSchedule().then(setSchedule);
-  }, []);
+  fetchSchedule(year).then(setSchedule);
+}, []);
 
 const toggleDriver = (abbr) => {
   setSelectedDrivers(prev => {
@@ -73,7 +74,7 @@ const onRoundChange = async (round) => {
   setDrivers([]);
   setSelectedDrivers([]);
   setTelemetry(null);
-  const data = await fetchDrivers(round, session);
+  const data = await fetchDrivers(round, session, year);
   setDrivers(data);
   setDriverColors(buildColorMap(data));
 };
@@ -84,7 +85,7 @@ const onSessionChange = async (s) => {
   setTelemetry(null);
   if (selectedRound) {
     setDrivers([]);
-    const data = await fetchDrivers(selectedRound, s);
+    const data = await fetchDrivers(selectedRound, s, year);
     setDrivers(data);
     setDriverColors(buildColorMap(data));;
   }
@@ -95,7 +96,7 @@ const onCompare = async () => {
   setTelemetry(null);
   try {
     const lap = lapMode === "fastest" ? "fastest" : selectedLap;
-    const data = await fetchTelemetry(2024, selectedRound, session, selectedDrivers, lap);
+    const data = await fetchTelemetry(year, selectedRound, session, selectedDrivers, lap);
     setTelemetry(data);
     console.log("Sectors:", data.sectors);
   } catch (err) {
@@ -127,7 +128,7 @@ const getColor = (abbr) => driverColors[abbr] || "#888888";
     <div className="app">
       <header className="header">
         <h1><span>Virtual</span> Pit Wall</h1>
-        <div className="header-badge">F1 · 2024</div>
+        <div className="header-badge">F1 · 2018-2024</div>
 
         {/* Back to Archives button */}
         <button
@@ -141,7 +142,23 @@ const getColor = (abbr) => driverColors[abbr] || "#888888";
         </button>
       </header>
 
-      <div className="controls">
+  <div className="controls">
+    <div className="control-group">
+  <span className="control-label">Season</span>
+  <select onChange={e => {
+    setYear(Number(e.target.value));
+    setSelectedRound(null);
+    setDrivers([]);
+    setSelectedDrivers([]);
+    setTelemetry(null);
+    fetchSchedule(Number(e.target.value)).then(setSchedule);
+  }}>
+    {[2024, 2023, 2022, 2021, 2020, 2019, 2018].map(y => (
+      <option key={y} value={y}>{y}</option>
+    ))}
+  </select>
+</div>
+
   <div className="control-group">
     <span className="control-label">Race</span>
     <select onChange={e => onRoundChange(Number(e.target.value))}>
