@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { fetchSchedule, fetchDrivers, fetchTelemetry, fetchDriverLaps } from "./api";import TelemetryChart from "./components/TelemetryChart";
 import DeltaChart from "./components/DeltaChart";
+import TrackMap from "./components/TrackMap";
 import "./App.css";
 
 export default function App() {
@@ -16,6 +17,16 @@ export default function App() {
   const [availableLaps, setAvailableLaps] = useState([]);
   const [selectedLap, setSelectedLap] = useState("");
   const [lapsLoading, setLapsLoading] = useState(false);
+const [hoverIndex, setHoverIndex] = useState(null);
+const throttleRef = useRef(null);
+
+const onHover = useCallback((index) => {
+  if (throttleRef.current) return;
+  throttleRef.current = setTimeout(() => {
+    throttleRef.current = null;
+  }, 16); // ~60fps
+  setHoverIndex(index);
+}, []);
 
 useEffect(() => {
     fetchSchedule().then(setSchedule);
@@ -248,9 +259,10 @@ disabled={
     </div>
 
     <div className="charts-section">
-      <DeltaChart data={telemetry} driverColors={driverColors} />
+      <TrackMap data={telemetry} driverColors={driverColors} hoverIndex={hoverIndex} />
+      <DeltaChart data={telemetry} driverColors={driverColors} onHover={onHover} />
       {["Speed", "Throttle", "Brake", "RPM", "nGear"].map(ch => (
-        <TelemetryChart key={ch} data={telemetry} channel={ch} driverColors={driverColors} />
+        <TelemetryChart key={ch} data={telemetry} channel={ch} driverColors={driverColors} onHover={onHover} />
       ))}
     </div>
   </>

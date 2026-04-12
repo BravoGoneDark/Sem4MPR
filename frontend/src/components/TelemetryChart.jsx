@@ -1,6 +1,6 @@
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
-export default function TelemetryChart({ data, channel, driverColors }) {
+export default function TelemetryChart({ data, channel, driverColors, onHover }) {
   const drivers = data.drivers;
   const getColor = (drv) => driverColors[drv] || "#888888";
 
@@ -10,11 +10,25 @@ export default function TelemetryChart({ data, channel, driverColors }) {
     return point;
   });
 
+  const handleMouseMove = (state) => {
+  if (state.isTooltipActive && state.activeTooltipIndex !== undefined) {
+    onHover(state.activeTooltipIndex);
+  }
+};
+
+const handleMouseLeave = () => onHover(null);
+
   return (
     <div className="chart-wrapper">
       <div className="chart-title">{channel}</div>
       <ResponsiveContainer width="100%" height={180}>
-        <LineChart data={chartData} syncId="pitwall" margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
+        <LineChart 
+        data={chartData} 
+        syncId="pitwall" 
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        margin={{ top: 4, right: 8, bottom: 4, left: 0 }}
+      >
           <CartesianGrid strokeDasharray="1 4" stroke="#151515" vertical={false} />
           <XAxis dataKey="dist" tick={{ fill: "#666", fontSize: 9, fontFamily: "monospace" }} axisLine={{ stroke: "#1a1a1a" }} tickLine={false} />
           <YAxis tick={{ fill: "#666", fontSize: 11, fontFamily: "monospace" }} width={38} axisLine={false} tickLine={false} />
