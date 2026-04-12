@@ -471,3 +471,38 @@ select option {
   color: #333;
   letter-spacing: 0.5px;
 }
+
+/* BACK TO ARCHIVES BUTTON */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  color: #444;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  border-color: #e8002d;
+  color: #e8002d;
+  background: rgba(232, 0, 45, 0.05);
+}
+
+.back-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.back-btn:hover svg {
+  transform: translateX(-2px);
+}

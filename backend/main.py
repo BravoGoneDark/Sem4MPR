@@ -1,6 +1,6 @@
 from flask import Flask,jsonify,request
 from flask_cors import CORS
-from f1_data import get_schedule, get_session_drivers, get_telemetry_comparison
+from f1_data import get_schedule, get_session_drivers, get_telemetry_comparison, get_driver_laps
 
 app=Flask(__name__)
 CORS(app)
@@ -24,7 +24,6 @@ def telemetry():
 
 @app.route("/laps/<int:year>/<int:round_number>/<session_type>/<driver>")
 def driver_laps(year, round_number, session_type, driver):
-    from f1_data import get_driver_laps
     return jsonify(get_driver_laps(year, round_number, session_type, driver))
 
 if __name__ == "__main__":

@@ -128,6 +128,17 @@ const getColor = (abbr) => driverColors[abbr] || "#888888";
       <header className="header">
         <h1><span>Virtual</span> Pit Wall</h1>
         <div className="header-badge">F1 · 2024</div>
+
+        {/* Back to Archives button */}
+        <button
+          className="back-btn"
+          onClick={() => window.location.href = '../../mainpage.html'}
+        >
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          F1 Archives
+        </button>
       </header>
 
       <div className="controls">
