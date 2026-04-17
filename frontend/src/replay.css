@@ -1,0 +1,433 @@
+/* ═══════════════════════════════════════════
+   RACE REPLAY
+═══════════════════════════════════════════ */
+
+/* Top-level tab switcher */
+.view-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.view-tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #444;
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -1px;
+}
+
+.view-tab:hover { color: #888; }
+.view-tab.active {
+  color: #e8002d;
+  border-bottom-color: #e8002d;
+}
+
+/* Replay root */
+.replay-root {
+  width: 100%;
+}
+
+.replay-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #333;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  border: 1px dashed #1e1e1e;
+  border-radius: 8px;
+}
+
+.replay-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  color: #555;
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.replay-error {
+  padding: 20px;
+  color: #e8002d;
+  font-family: monospace;
+  font-size: 13px;
+  background: #1a0000;
+  border: 1px solid #e8002d33;
+  border-radius: 6px;
+}
+
+/* Status bar (SC / VSC / red flag) */
+.replay-status-bar {
+  text-align: center;
+  padding: 6px;
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #000;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  animation: pulse-bar 1s infinite alternate;
+}
+
+@keyframes pulse-bar {
+  from { opacity: 0.8; }
+  to   { opacity: 1;   }
+}
+
+/* Info bar */
+.replay-info-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 8px 0;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.replay-info-item {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 1px;
+}
+
+.replay-info-item strong {
+  color: #fff;
+  margin-left: 4px;
+}
+
+.replay-speed-badge {
+  background: #e8002d;
+  color: #fff !important;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-weight: 900;
+}
+
+.replay-weather {
+  margin-left: auto;
+  color: #444 !important;
+  font-size: 10px !important;
+}
+
+/* Layout: canvas + right panel */
+.replay-body {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.replay-canvas-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.replay-canvas {
+  width: 100%;
+  background: #080808;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  cursor: crosshair;
+  display: block;
+}
+
+/* Scrubber */
+.replay-scrubber-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.replay-scrubber {
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: #1a1a1a;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+.replay-scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #e8002d;
+  cursor: pointer;
+  box-shadow: 0 0 6px #e8002d;
+}
+
+.replay-tyre-strip {
+  display: flex;
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0.7;
+}
+
+/* Playback controls */
+.replay-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.replay-ctrl-btn {
+  background: #111;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  color: #aaa;
+  font-size: 16px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.replay-ctrl-btn:hover { background: #1a1a1a; color: #fff; }
+
+.replay-play-btn {
+  background: #e8002d;
+  border-color: #e8002d;
+  color: #fff;
+  width: 46px;
+  height: 46px;
+  font-size: 18px;
+  box-shadow: 0 0 12px #e8002d44;
+}
+
+.replay-play-btn:hover { background: #ff0033; }
+
+.replay-restart-btn { font-size: 18px; }
+
+.replay-speed-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.replay-speed-ctrl button {
+  background: #111;
+  border: none;
+  color: #aaa;
+  font-size: 16px;
+  width: 32px;
+  height: 38px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.replay-speed-ctrl button:hover:not(:disabled) { background: #1a1a1a; color: #fff; }
+.replay-speed-ctrl button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.replay-speed-ctrl span {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #e8002d;
+  padding: 0 10px;
+  min-width: 46px;
+  text-align: center;
+}
+
+.replay-time-display {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  color: #444;
+  margin-left: auto;
+  letter-spacing: 1px;
+}
+
+/* Right panel */
+.replay-right-panel {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Driver telemetry panel */
+.replay-tel-panel {
+  background: #0d0d0d;
+  border: 1px solid #1e1e1e;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.replay-tel-header {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.replay-tel-close {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.replay-tel-close:hover { color: #e8002d; }
+
+.replay-tel-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #555;
+}
+
+.replay-tel-row strong { color: #fff; font-size: 13px; }
+
+.replay-tel-bars {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.replay-bar-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  color: #333;
+  letter-spacing: 1px;
+  margin-bottom: 1px;
+}
+
+.replay-bar-track {
+  background: #1a1a1a;
+  border-radius: 2px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.replay-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+/* Leaderboard */
+.replay-leaderboard {
+  background: #0a0a0a;
+  border: 1px solid #1e1e1e;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.replay-lb-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: #e8002d;
+  letter-spacing: 2px;
+  padding: 8px 10px 6px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.replay-lb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: background 0.1s;
+  text-align: left;
+}
+
+.replay-lb-row:hover { background: #111; }
+.replay-lb-row.selected { background: #0d0d0d; }
+
+.lb-pos {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  color: #333;
+  width: 18px;
+  text-align: right;
+}
+
+.lb-code {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  flex: 1;
+}
+
+.lb-tyre {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  text-align: center;
+}
+
+.lb-lap {
+  font-family: monospace;
+  font-size: 10px;
+  color: #333;
+}
+
+/* Keyboard hints */
+.replay-hints {
+  background: #0a0a0a;
+  border: 1px solid #1e1e1e;
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.replay-hints div {
+  font-family: monospace;
+  font-size: 10px;
+  color: #2a2a2a;
+}
+
+.replay-lb-row.dnf {
+  opacity: 0.3;
+}

@@ -2,6 +2,9 @@ import fastf1
 import numpy as np
 from scipy.interpolate import interp1d
 import os
+import pickle
+import pandas as pd
+
 
 cache = 'cache'
 if not os.path.exists(cache):
@@ -140,3 +143,239 @@ def _compute_delta(tel1, tel2, common_dist):
     t2_interp = dist_to_time(tel2)
     delta = t1_interp(common_dist) - t2_interp(common_dist)
     return delta.tolist()   
+
+
+
+TYRE_MAP = {"SOFT": 1, "MEDIUM": 2, "HARD": 3, "INTERMEDIATE": 4, "WET": 5}
+REPLAY_FPS = 10
+REPLAY_DT  = 1.0 / REPLAY_FPS
+
+def get_replay_data(year: int, round_number: int, session_type: str = "R"):
+    """
+    Build columnar per-frame replay data for the web player.
+    Heavily adapted from Tom Shaw's f1-race-replay
+    (github.com/IAmTomShaw/f1-race-replay) — data layer only,
+    Arcade/desktop rendering completely removed.
+    """
+    import pickle
+    import pandas as pd
+
+    cache_dir = "computed_data"
+    os.makedirs(cache_dir, exist_ok=True)
+    cache_path = os.path.join(cache_dir, f"{year}_{round_number}_{session_type}_replay.pkl")
+
+    if os.path.exists(cache_path):
+        print(f"[Replay] Loading cached data from {cache_path}")
+        with open(cache_path, "rb") as f:
+            return pickle.load(f)
+
+    print(f"[Replay] Processing {year} R{round_number} {session_type} …")
+    session = fastf1.get_session(year, round_number, session_type)
+    session.load(telemetry=True, weather=True)
+
+    event_name = session.event["EventName"]
+    total_laps  = int(session.laps["LapNumber"].max()) if not session.laps.empty else 0
+
+    # ── driver meta ───────────────────────────────────────────────────────────
+    driver_colors = {}
+    driver_info   = {}
+    for _, row in session.results.iterrows():
+        abbr  = row["Abbreviation"]
+        color = row.get("TeamColor", "888888")
+        driver_colors[abbr] = f"#{color}" if pd.notna(color) else "#888888"
+        driver_info[abbr] = {
+            "fullName": row.get("FullName", abbr),
+            "team":     row.get("TeamName", ""),
+        }
+
+    # ── per-driver telemetry ──────────────────────────────────────────────────
+    driver_data   = {}
+    global_t_min  = None
+    global_t_max  = None
+
+    for driver_no in session.drivers:
+        try:
+            code        = session.get_driver(driver_no)["Abbreviation"]
+            laps_driver = session.laps.pick_drivers(driver_no)
+            if laps_driver.empty:
+                continue
+
+            t_all   = []; x_all  = []; y_all  = []
+            dst_all = []; lap_all= []
+            tyr_all = []; spd_all= []; gea_all= []
+            drs_all = []; thr_all= []; brk_all= []
+            cum_dist = 0.0
+
+            for _, lap in laps_driver.iterlaps():
+                tel = lap.get_telemetry()
+                if tel.empty:
+                    continue
+
+                t_lap = tel["SessionTime"].dt.total_seconds().to_numpy()
+                d_lap = tel["Distance"].to_numpy()
+
+                t_all.append(t_lap)
+                x_all.append(tel["X"].to_numpy())
+                y_all.append(tel["Y"].to_numpy())
+                dst_all.append(cum_dist + d_lap)
+                lap_all.append(np.full(len(t_lap), int(lap.LapNumber)))
+                tyr_all.append(np.full(len(t_lap), TYRE_MAP.get(lap.Compound, 0)))
+                spd_all.append(tel["Speed"].to_numpy())
+                gea_all.append(tel["nGear"].to_numpy())
+                drs_all.append(tel["DRS"].to_numpy())
+                thr_all.append(tel["Throttle"].to_numpy())
+                brk_all.append(tel["Brake"].to_numpy().astype(float) * 100.0)
+
+                cum_dist += d_lap[-1] if len(d_lap) else 0.0
+
+            if not t_all:
+                continue
+
+            t_cat  = np.concatenate(t_all)
+            order  = np.argsort(t_cat)
+            t_cat  = t_cat[order]
+
+            driver_data[code] = {
+                "t":    t_cat,
+                "x":    np.concatenate(x_all)[order],
+                "y":    np.concatenate(y_all)[order],
+                "dist": np.concatenate(dst_all)[order],
+                "lap":  np.concatenate(lap_all)[order],
+                "tyre": np.concatenate(tyr_all)[order],
+                "spd":  np.concatenate(spd_all)[order],
+                "gear": np.concatenate(gea_all)[order],
+                "drs":  np.concatenate(drs_all)[order],
+                "thr":  np.concatenate(thr_all)[order],
+                "brk":  np.concatenate(brk_all)[order],
+            }
+
+            global_t_min = t_cat.min() if global_t_min is None else min(global_t_min, t_cat.min())
+            global_t_max = t_cat.max() if global_t_max is None else max(global_t_max, t_cat.max())
+            print(f"  ✓ {code}")
+
+        except Exception as exc:
+            print(f"  ✗ driver {driver_no}: {exc}")
+
+    if not driver_data:
+        raise ValueError("No valid telemetry data found")
+
+    # ── common timeline ───────────────────────────────────────────────────────
+    timeline = np.arange(global_t_min, global_t_max, REPLAY_DT) - global_t_min
+    n        = len(timeline)
+
+    # ── resample every driver onto timeline ───────────────────────────────────
+    channels = ["x", "y", "dist", "lap", "tyre", "spd", "gear", "drs", "thr", "brk"]
+    resampled = {}
+    for code, data in driver_data.items():
+        t_rel  = data["t"] - global_t_min
+        order  = np.argsort(t_rel)
+        t_s    = t_rel[order]
+        resampled[code] = {
+            ch: np.interp(timeline, t_s, data[ch][order]).round(2).tolist()
+            for ch in channels
+        }
+
+    # ── live leaderboard position per frame ───────────────────────────────────
+    drivers_list = list(resampled.keys())
+
+    # Use actual position data from fastf1
+    pos_data = {}
+    for driver_no in session.drivers:
+        try:
+            code = session.get_driver(driver_no)["Abbreviation"]
+            if code not in resampled:
+                continue
+            driver_pos = session.pos_data[driver_no][["SessionTime", "Status"]].copy()
+            # fastf1 position data has actual race positions
+            laps_driver = session.laps.pick_drivers(driver_no)[["LapNumber", "Position", "Time"]].dropna()
+            if laps_driver.empty:
+                continue
+            # interpolate position across timeline
+            t_pos = laps_driver["Time"].dt.total_seconds().to_numpy() - global_t_min
+            p_pos = laps_driver["Position"].to_numpy()
+            order = np.argsort(t_pos)
+            resampled[code]["pos"] = np.interp(
+                timeline, t_pos[order], p_pos[order]
+            ).round(0).astype(int).tolist()
+        except Exception as e:
+            print(f"Position data error for {code}: {e}")
+            # fallback to calculated position
+            for i in range(n):
+                if "pos" not in resampled[code]:
+                    resampled[code]["pos"] = [0] * n
+
+    # Fill any missing pos arrays with calculated fallback
+    for i in range(n):
+        ranked = sorted(
+            [c for c in drivers_list if "pos" in resampled[c]],
+            key=lambda c: resampled[c]["pos"][i]
+        )
+
+    # ── track status (SC / VSC / red flag) ───────────────────────────────────
+    track_statuses = []
+    STATUS_LABEL = {"1": "clear", "2": "yellow", "4": "sc", "5": "red", "6": "vsc"}
+    for _, row in session.track_status.iterrows():
+        t_sec = row["Time"].total_seconds() - global_t_min
+        track_statuses.append({
+            "t":      round(float(t_sec), 2),
+            "status": str(row["Status"]),
+            "label":  STATUS_LABEL.get(str(row["Status"]), "unknown"),
+        })
+
+
+    # ── weather ───────────────────────────────────────────────────────────────
+    weather_out = {}
+    try:
+        wd = session.weather_data
+        if wd is not None and not wd.empty:
+            wt    = (wd["Time"].dt.total_seconds() - global_t_min).to_numpy()
+            order = np.argsort(wt)
+            wt    = wt[order]
+            for col, key in [("TrackTemp","trackTemp"),("AirTemp","airTemp"),
+                             ("Humidity","humidity"),("WindSpeed","windSpeed")]:
+                if col in wd.columns:
+                    weather_out[key] = np.interp(timeline, wt,
+                                                  wd[col].to_numpy()[order]).round(1).tolist()
+            if "Rainfall" in wd.columns:
+                weather_out["rainfall"] = np.interp(
+                    timeline, wt, wd["Rainfall"].to_numpy().astype(float)[order]
+                ).round(2).tolist()
+    except Exception as exc:
+        print(f"  Weather error: {exc}")
+
+    # ── track map ─────────────────────────────────────────────────────────────
+    try:
+        fastest  = session.laps.pick_fastest()
+        tel_fast = fastest.get_telemetry()
+        track_map = {"x": tel_fast["X"].tolist(), "y": tel_fast["Y"].tolist()}
+    except Exception:
+        first = drivers_list[0]
+        track_map = {"x": resampled[first]["x"], "y": resampled[first]["y"]}
+
+    result = {
+        "meta": {
+            "eventName":   event_name,
+            "year":        year,
+            "round":       round_number,
+            "sessionType": session_type,
+            "totalFrames": n,
+            "totalLaps":   total_laps,
+            "fps":         REPLAY_FPS,
+            "duration":    round(float(timeline[-1]), 1),
+        },
+        "trackMap":      track_map,
+        "driverColors":  driver_colors,
+        "driverInfo":    driver_info,
+        "drivers":       drivers_list,
+        "frames": {
+            "t": timeline.round(2).tolist(),
+            **resampled,
+        },
+        "weather":       weather_out,
+        "trackStatuses": track_statuses,
+    }
+
+    with open(cache_path, "wb") as f:
+        pickle.dump(result, f, protocol=pickle.HIGHEST_PROTOCOL)
+    print(f"[Replay] Cached → {cache_path}")
+    return result

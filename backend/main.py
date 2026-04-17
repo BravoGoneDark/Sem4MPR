@@ -26,5 +26,14 @@ def telemetry():
 def driver_laps(year, round_number, session_type, driver):
     return jsonify(get_driver_laps(year, round_number, session_type, driver))
 
+@app.route("/replay")
+def replay():
+    print("REPLAY ROUTE HIT")
+    year= int(request.args.get("year"))
+    round_number = int(request.args.get("round"))
+    session_type = request.args.get("session", "R")
+    from f1_data import get_replay_data
+    return jsonify(get_replay_data(year, round_number, session_type))
+
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
