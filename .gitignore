@@ -14,3 +14,6 @@ cache/
 # OS generated files
 .DS_Store
 desktop.ini
+
+computed_data/
+*.pkl
