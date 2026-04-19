@@ -1,6 +1,7 @@
 import fastf1
 import numpy as np
 from scipy.interpolate import interp1d
+from multiprocessing import Pool, cpu_count
 import os
 import pickle
 import pandas as pd
@@ -167,13 +168,90 @@ def _compute_delta(tel1, tel2, common_dist):
     t1_interp = dist_to_time(tel1)
     t2_interp = dist_to_time(tel2)
     delta = t1_interp(common_dist) - t2_interp(common_dist)
-    return delta.tolist()   
+    return delta.tolist()
 
 
-
-TYRE_MAP = {"SOFT": 1, "MEDIUM": 2, "HARD": 3, "INTERMEDIATE": 4, "WET": 5}
+TYRE_MAP   = {"SOFT": 1, "MEDIUM": 2, "HARD": 3, "INTERMEDIATE": 4, "WET": 5}
 REPLAY_FPS = 10
-REPLAY_DT  = 1.0 / REPLAY_FPS
+REPLAY_DT  = 1.0 / 10
+
+
+# Top-level function required for multiprocessing (cannot be nested)
+def _process_replay_driver(args):
+    driver_no, year, round_number, session_type = args
+    try:
+        fastf1.Cache.enable_cache('cache')
+        session = fastf1.get_session(year, round_number, session_type)
+        session.load(telemetry=True, weather=False)
+
+        code        = session.get_driver(driver_no)["Abbreviation"]
+        laps_driver = session.laps.pick_drivers(driver_no)
+        if laps_driver.empty:
+            return None
+
+        t_all=[]; x_all=[]; y_all=[]; dst_all=[]; lap_all=[]
+        tyr_all=[]; spd_all=[]; gea_all=[]; drs_all=[]; thr_all=[]; brk_all=[]
+        cum_dist = 0.0
+
+        for _, lap in laps_driver.iterlaps():
+            tel = lap.get_telemetry()
+            if tel.empty:
+                continue
+            t_lap = tel["SessionTime"].dt.total_seconds().to_numpy()
+            d_lap = tel["Distance"].to_numpy()
+            t_all.append(t_lap)
+            x_all.append(tel["X"].to_numpy())
+            y_all.append(tel["Y"].to_numpy())
+            dst_all.append(cum_dist + d_lap)
+            lap_all.append(np.full(len(t_lap), int(lap.LapNumber)))
+            tyr_all.append(np.full(len(t_lap), TYRE_MAP.get(lap.Compound, 0)))
+            spd_all.append(tel["Speed"].to_numpy())
+            gea_all.append(tel["nGear"].to_numpy())
+            drs_all.append(tel["DRS"].to_numpy())
+            thr_all.append(tel["Throttle"].to_numpy())
+            brk_all.append(tel["Brake"].to_numpy().astype(float) * 100.0)
+            cum_dist += d_lap[-1] if len(d_lap) else 0.0
+
+        if not t_all:
+            return None
+
+        t_cat = np.concatenate(t_all)
+        order = np.argsort(t_cat)
+        t_cat = t_cat[order]
+        print(f"  ✓ {code}")
+        return {
+            "code": code,
+            "t":    t_cat,
+            "x":    np.concatenate(x_all)[order],
+            "y":    np.concatenate(y_all)[order],
+            "dist": np.concatenate(dst_all)[order],
+            "lap":  np.concatenate(lap_all)[order],
+            "tyre": np.concatenate(tyr_all)[order],
+            "spd":  np.concatenate(spd_all)[order],
+            "gear": np.concatenate(gea_all)[order],
+            "drs":  np.concatenate(drs_all)[order],
+            "thr":  np.concatenate(thr_all)[order],
+            "brk":  np.concatenate(brk_all)[order],
+        }
+    except Exception as e:
+        print(f"  ✗ driver {driver_no}: {e}")
+        return None
+    
+
+def _is_dnf(status):
+    if not status or pd.isna(status):
+        return False
+    s = str(status).strip()
+    # Completed the race (possibly lapped)
+    if s == "Finished" or s == "Lapped":
+        return False
+    # "+1 Lap", "+2 Laps", "+3 Laps" etc — completed race while being lapped
+    if s.startswith("+") and "Lap" in s:
+        return False
+    # Everything else is a retirement:
+    # "Retired", "Accident", "Oil leak", "Engine", "Gearbox", "Hydraulics" etc.
+    return True
+
 
 def get_replay_data(year: int, round_number: int, session_type: str = "R"):
     """
@@ -182,9 +260,6 @@ def get_replay_data(year: int, round_number: int, session_type: str = "R"):
     (github.com/IAmTomShaw/f1-race-replay) — data layer only,
     Arcade/desktop rendering completely removed.
     """
-    import pickle
-    import pandas as pd
-
     cache_dir = "computed_data"
     os.makedirs(cache_dir, exist_ok=True)
     cache_path = os.path.join(cache_dir, f"{year}_{round_number}_{session_type}_replay.pkl")
@@ -197,6 +272,9 @@ def get_replay_data(year: int, round_number: int, session_type: str = "R"):
     print(f"[Replay] Processing {year} R{round_number} {session_type} …")
     session = fastf1.get_session(year, round_number, session_type)
     session.load(telemetry=True, weather=True)
+
+    for _, row in session.results.iterrows():
+        print(f"  {row['Abbreviation']}: status = '{row.get('Status', 'N/A')}'")
 
     event_name = session.event["EventName"]
     total_laps  = int(session.laps["LapNumber"].max()) if not session.laps.empty else 0
@@ -213,73 +291,25 @@ def get_replay_data(year: int, round_number: int, session_type: str = "R"):
             "team":     row.get("TeamName", ""),
         }
 
-    # ── per-driver telemetry ──────────────────────────────────────────────────
-    driver_data   = {}
-    global_t_min  = None
-    global_t_max  = None
+    # ── per-driver telemetry (parallel) ──────────────────────────────────────
+    driver_data  = {}
+    global_t_min = None
+    global_t_max = None
 
-    for driver_no in session.drivers:
-        try:
-            code        = session.get_driver(driver_no)["Abbreviation"]
-            laps_driver = session.laps.pick_drivers(driver_no)
-            if laps_driver.empty:
-                continue
+    args      = [(d, year, round_number, session_type) for d in session.drivers]
+    num_procs = min(cpu_count(), len(args))
+    print(f"[Replay] Processing {len(args)} drivers across {num_procs} cores…")
 
-            t_all   = []; x_all  = []; y_all  = []
-            dst_all = []; lap_all= []
-            tyr_all = []; spd_all= []; gea_all= []
-            drs_all = []; thr_all= []; brk_all= []
-            cum_dist = 0.0
+    with Pool(processes=num_procs) as pool:
+        results = pool.map(_process_replay_driver, args)
 
-            for _, lap in laps_driver.iterlaps():
-                tel = lap.get_telemetry()
-                if tel.empty:
-                    continue
-
-                t_lap = tel["SessionTime"].dt.total_seconds().to_numpy()
-                d_lap = tel["Distance"].to_numpy()
-
-                t_all.append(t_lap)
-                x_all.append(tel["X"].to_numpy())
-                y_all.append(tel["Y"].to_numpy())
-                dst_all.append(cum_dist + d_lap)
-                lap_all.append(np.full(len(t_lap), int(lap.LapNumber)))
-                tyr_all.append(np.full(len(t_lap), TYRE_MAP.get(lap.Compound, 0)))
-                spd_all.append(tel["Speed"].to_numpy())
-                gea_all.append(tel["nGear"].to_numpy())
-                drs_all.append(tel["DRS"].to_numpy())
-                thr_all.append(tel["Throttle"].to_numpy())
-                brk_all.append(tel["Brake"].to_numpy().astype(float) * 100.0)
-
-                cum_dist += d_lap[-1] if len(d_lap) else 0.0
-
-            if not t_all:
-                continue
-
-            t_cat  = np.concatenate(t_all)
-            order  = np.argsort(t_cat)
-            t_cat  = t_cat[order]
-
-            driver_data[code] = {
-                "t":    t_cat,
-                "x":    np.concatenate(x_all)[order],
-                "y":    np.concatenate(y_all)[order],
-                "dist": np.concatenate(dst_all)[order],
-                "lap":  np.concatenate(lap_all)[order],
-                "tyre": np.concatenate(tyr_all)[order],
-                "spd":  np.concatenate(spd_all)[order],
-                "gear": np.concatenate(gea_all)[order],
-                "drs":  np.concatenate(drs_all)[order],
-                "thr":  np.concatenate(thr_all)[order],
-                "brk":  np.concatenate(brk_all)[order],
-            }
-
-            global_t_min = t_cat.min() if global_t_min is None else min(global_t_min, t_cat.min())
-            global_t_max = t_cat.max() if global_t_max is None else max(global_t_max, t_cat.max())
-            print(f"  ✓ {code}")
-
-        except Exception as exc:
-            print(f"  ✗ driver {driver_no}: {exc}")
+    for result in results:
+        if result is None:
+            continue
+        code = result.pop("code")
+        driver_data[code] = result
+        global_t_min = result["t"].min() if global_t_min is None else min(global_t_min, result["t"].min())
+        global_t_max = result["t"].max() if global_t_max is None else max(global_t_max, result["t"].max())
 
     if not driver_data:
         raise ValueError("No valid telemetry data found")
@@ -336,6 +366,34 @@ def get_replay_data(year: int, round_number: int, session_type: str = "R"):
             key=lambda c: resampled[c]["pos"][i]
         )
 
+    # ── DNF / DNS detection using actual session results ─────────────────────
+    dnf_frames = {}
+    for code in drivers_list:
+        dnf_frame = None
+        try:
+            # Get driver's finishing status from results
+            driver_result = session.results[session.results["Abbreviation"] == code]
+            if not driver_result.empty:
+                status = driver_result.iloc[0].get("Status", "Finished")
+                # If status is not "Finished" or "Lapped", driver retired
+                if _is_dnf(status):
+                    # Find the frame where their distance stopped increasing
+                    drv_dist = resampled[code]["dist"]
+                    start_check = n // 5
+                    for i in range(start_check, n):
+                        window = 100
+                        if i >= window:
+                            dist_change = drv_dist[i] - drv_dist[i - window]
+                            if dist_change < 5.0:
+                                dnf_frame = i
+                                break
+        except Exception as e:
+            print(f"DNF detection error for {code}: {e}")
+
+        dnf_frames[code] = dnf_frame
+        if dnf_frame:
+            print(f"  DNF detected: {code} at frame {dnf_frame} ({dnf_frame/REPLAY_FPS:.0f}s)")
+
     # ── track status (SC / VSC / red flag) ───────────────────────────────────
     track_statuses = []
     STATUS_LABEL = {"1": "clear", "2": "yellow", "4": "sc", "5": "red", "6": "vsc"}
@@ -346,7 +404,6 @@ def get_replay_data(year: int, round_number: int, session_type: str = "R"):
             "status": str(row["Status"]),
             "label":  STATUS_LABEL.get(str(row["Status"]), "unknown"),
         })
-
 
     # ── weather ───────────────────────────────────────────────────────────────
     weather_out = {}
@@ -392,6 +449,7 @@ def get_replay_data(year: int, round_number: int, session_type: str = "R"):
         "driverColors":  driver_colors,
         "driverInfo":    driver_info,
         "drivers":       drivers_list,
+        "dnfFrames":     dnf_frames,
         "frames": {
             "t": timeline.round(2).tolist(),
             **resampled,

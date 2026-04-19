@@ -157,6 +157,10 @@ export default function RaceReplay({ year, round }) {
       const fd = frames[code];
       if (!fd) continue;
 
+      const dnfFrame = data.dnfFrames?.[code];
+      const isDNF = dnfFrame !== null && dnfFrame !== undefined && fi >= dnfFrame;
+      if (isDNF) continue;
+
       const wx = fd.x[fi], wy = fd.y[fi];
       const [cx, cy] = toCanvas(wx, wy, W, H);
       const color    = data.driverColors[code] || "#888";
@@ -192,15 +196,24 @@ export default function RaceReplay({ year, round }) {
     const frames  = data.frames;
     const drivers = data.drivers;
 
-    const lb = drivers
-      .map(code => ({
+  const lb = drivers
+    .map(code => {
+      const dnfFrame = data.dnfFrames?.[code];
+      const isDNF = dnfFrame !== null && dnfFrame !== undefined && fi >= dnfFrame;
+      return {
         code,
         pos:  Math.round(frames[code]?.pos?.[fi] ?? 99),
         lap:  Math.round(frames[code]?.lap?.[fi]  ?? 0),
         tyre: Math.round(frames[code]?.tyre?.[fi] ?? 0),
-      }))
-      .sort((a, b) => a.pos - b.pos);
-    setLeaderboard(lb);
+        dnf:  isDNF,
+      };
+    })
+    .sort((a, b) => {
+      if (a.dnf && !b.dnf) return 1;
+      if (!a.dnf && b.dnf) return -1;
+      return a.pos - b.pos;
+    });
+  setLeaderboard(lb);
 
     const t = frames.t[fi];
     let curStatus = "1";
@@ -365,13 +378,13 @@ export default function RaceReplay({ year, round }) {
             <span>Select a race above first</span>
           ) : (
             <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"16px" }}>
-              <span style={{ color:"#555", fontFamily:"monospace", fontSize:"12px" }}>
+              <span style={{ color:"#d6c3c3d5", fontFamily:"monospace", fontSize:"14px" }}>
                 {year} · Round {round} · Race
               </span>
-              <button className="compare-btn" onClick={() => setStarted(true)}>
+              <button className="replay-load-btn" onClick={() => setStarted(true)}>
                 Load Replay
               </button>
-              <span style={{ color:"#333", fontFamily:"monospace", fontSize:"10px" }}>
+              <span style={{ color:"#ec6e44", fontFamily:"monospace", fontSize:"13px" }}>
                 First load may take 1–2 minutes
               </span>
             </div>
@@ -532,28 +545,34 @@ export default function RaceReplay({ year, round }) {
 
               <div className="replay-leaderboard">
                 <div className="replay-lb-title">LEADERBOARD</div>
-                {leaderboard.map((entry) => {
-                  const color = data.driverColors[entry.code] || "#888";
-                  return (
-                    <button
-                      key={entry.code}
-                      className={`replay-lb-row ${selectedDriver === entry.code ? "selected" : ""}`}
-                      onClick={() => setSelectedDriver(
-                        prev => prev === entry.code ? null : entry.code
-                      )}
-                      style={selectedDriver === entry.code
-                        ? { background:`${color}22`, borderLeft:`3px solid ${color}` }
-                        : {}}
-                    >
-                      <span className="lb-pos">{entry.pos}</span>
-                      <span className="lb-code" style={{ color }}>{entry.code}</span>
-                      <span className="lb-tyre" style={{ color: TYRE_COLOR[entry.tyre] }}>
-                        {TYRE_NAME[entry.tyre]}
-                      </span>
-                      <span className="lb-lap">L{entry.lap}</span>
-                    </button>
-                  );
-                })}
+                  {leaderboard.map((entry) => {
+                    const color = data.driverColors[entry.code] || "#888";
+                    return (
+                      <button
+                        key={entry.code}
+                        className={`replay-lb-row ${selectedDriver === entry.code ? "selected" : ""} ${entry.dnf ? "dnf" : ""}`}
+                        onClick={() => setSelectedDriver(
+                          prev => prev === entry.code ? null : entry.code
+                        )}
+                        style={selectedDriver === entry.code
+                          ? { background:`${color}22`, borderLeft:`3px solid ${color}` }
+                          : {}}
+                      >
+                        <span className="lb-pos" style={{ color: entry.dnf ? "#dfbdbde6" : "#d5ceceb7" }}>
+                          {entry.dnf ? "OUT " : entry.pos}
+                        </span>
+                        <span className="lb-code" style={{ color: entry.dnf ? "#dfbdbde6" : color }}>
+                          {entry.code}
+                        </span>
+                        <span className="lb-tyre" style={{ color: entry.dnf ? "#dfbdbde6" : TYRE_COLOR[entry.tyre] }}>
+                          {entry.dnf ? "—" : TYRE_NAME[entry.tyre]}
+                        </span>
+                        <span className="lb-lap" style={{ color: entry.dnf ? "#dfbdbde6" : "" }}>
+                          {entry.dnf ? "DNF" : `L${entry.lap}`}
+                        </span>
+                      </button>
+                    );
+                  })}
               </div>
 
               <div className="replay-hints">

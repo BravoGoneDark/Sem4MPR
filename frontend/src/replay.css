@@ -383,8 +383,8 @@
 
 .lb-pos {
   font-family: 'Orbitron', monospace;
-  font-size: 10px;
-  color: #333;
+  font-size: 11px;
+  color: #ddd8d8;
   width: 18px;
   text-align: right;
 }
@@ -430,4 +430,46 @@
 
 .replay-lb-row.dnf {
   opacity: 0.3;
+}
+
+/* Load Replay button */
+.replay-load-btn {
+  background: #e8002d;
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 4px;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 24px rgba(232, 0, 45, 0.3);
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+}
+
+.replay-load-btn:hover {
+  background: #ff0033;
+  box-shadow: 0 0 40px rgba(232, 0, 45, 0.5);
+}
+
+/* Placeholder improvements */
+.replay-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #939090;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  border: 1px dashed #1e1e1e;
+  border-radius: 8px;
+  background: #080808;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
