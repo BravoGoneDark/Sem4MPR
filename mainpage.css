@@ -1460,6 +1460,13 @@ header .menu.active {
     text-align: center;
 }
 
+@media screen and (max-height: 1199px) {
+
+    #constructors-banner .content {
+        padding-bottom: clamp(21vh, 25vh, 28vh);
+    }
+}
+
 @media (max-width: 768px) {
   .f1-grid-section { padding: 60px 20px; }
   .cards-grid { grid-template-columns: 1fr; gap: 16px; }
