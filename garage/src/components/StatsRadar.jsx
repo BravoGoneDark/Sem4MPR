@@ -61,7 +61,6 @@ export default function StatsRadar({ constructor: carA, compareCars = [] }) {
   const allStatKeys = Object.keys(carA.stats)
   const hasCompare  = compareCars.length > 0
 
-  // Build radar data — valueA always present, valueB/valueC only when cars selected
   const radarData = RADAR_KEYS.map((key) => {
     const entryA = normalized[key].find(n => n.id === carA.id)
     const entryB = compareCars[0] ? normalized[key].find(n => n.id === compareCars[0].id) : null
@@ -82,7 +81,7 @@ export default function StatsRadar({ constructor: carA, compareCars = [] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', height: '100%' }}>
 
-      {/* Section label + legend */}
+      {/* SECTION LABEL*/}
       <div>
         <p style={{
           fontFamily: 'Orbitron', fontSize: '0.55rem',
@@ -136,7 +135,7 @@ export default function StatsRadar({ constructor: carA, compareCars = [] }) {
             />
             <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
 
-            {/* Car A — always */}
+            {/* Car A  */}
             <Radar
               name={carA.car} dataKey="valueA"
               stroke={carA.teamColor} fill={carA.teamColor}
@@ -170,7 +169,7 @@ export default function StatsRadar({ constructor: carA, compareCars = [] }) {
         </ResponsiveContainer>
       </div>
 
-      {/* All 13 stat cards — 3 columns */}
+      {/* STATS*/}
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr',
@@ -193,7 +192,7 @@ export default function StatsRadar({ constructor: carA, compareCars = [] }) {
               {STAT_LABELS[key]}
             </p>
 
-            {/* Car A — always white, primary */}
+            {/* Car A */}
             <p style={{
               fontFamily: 'Orbitron', fontSize: '0.78rem', fontWeight: 700,
               color: '#fff', letterSpacing: '0.03em', lineHeight: 1,
@@ -204,7 +203,8 @@ export default function StatsRadar({ constructor: carA, compareCars = [] }) {
               </span>
             </p>
 
-            {/* Compare cars stacked below */}
+            {/* Compare B / C */}
+
             {compareCars.map((car) => (
               <p key={car.id} style={{
                 fontFamily: 'Orbitron', fontSize: '0.65rem', fontWeight: 600,

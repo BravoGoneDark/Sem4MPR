@@ -93,7 +93,7 @@ export default function CarModal({ constructor, onClose }) {
               overflow: 'hidden', position: 'relative',
             }}
           >
-            {/* Carbon fiber texture */}
+            {/* TEXTURE */}
             <div style={{
               position: 'absolute', inset: 0,
               backgroundImage: `
@@ -104,20 +104,18 @@ export default function CarModal({ constructor, onClose }) {
               borderRadius: '16px', pointerEvents: 'none',
             }} />
 
-            {/* Top accent */}
             <div style={{
               height: '3px', flexShrink: 0,
               background: `linear-gradient(90deg, transparent, ${constructor.teamColor}, transparent)`,
             }} />
 
-            {/* Header */}
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '1.2rem 2rem',
               borderBottom: `1px solid rgba(255,255,255,0.06)`,
               flexShrink: 0, gap: '1rem',
             }}>
-              {/* Left — car identity */}
+              {/* LEFT */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <img src={constructor.logo} alt={constructor.name}
                   style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
@@ -137,7 +135,7 @@ export default function CarModal({ constructor, onClose }) {
                 </div>
               </div>
 
-              {/* Right — dossier + compare + close */}
+              {/* RIGHT */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
 
                 {/* DOSSIER */}
@@ -174,7 +172,7 @@ export default function CarModal({ constructor, onClose }) {
                   DOSSIER
                 </button>
 
-                {/* COMPARE — multi-select dropdown */}
+                {/* COMPARE */}
                 <div data-compare-dropdown style={{ position: 'relative' }}>
                   <button
                     onClick={() => setDropdownOpen(v => !v)}
@@ -222,7 +220,7 @@ export default function CarModal({ constructor, onClose }) {
                     )}
                   </button>
 
-                  {/* Dropdown */}
+                  {/* DROPDOWN - COMPARE */}
                   <AnimatePresence>
                     {dropdownOpen && (
                       <motion.div
@@ -239,7 +237,6 @@ export default function CarModal({ constructor, onClose }) {
                           boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
                         }}
                       >
-                        {/* Dropdown header */}
                         <div style={{
                           padding: '0.6rem 0.9rem',
                           borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -251,7 +248,6 @@ export default function CarModal({ constructor, onClose }) {
                           }}>
                             Select up to {MAX_COMPARE}
                           </p>
-                          {/* Slot indicators */}
                           <div style={{ display: 'flex', gap: '4px' }}>
                             {Array.from({ length: MAX_COMPARE }).map((_, i) => {
                               const filled = compareCars[i]
@@ -275,7 +271,6 @@ export default function CarModal({ constructor, onClose }) {
                           </div>
                         </div>
 
-                        {/* Car rows */}
                         {otherCars.map((car) => {
                           const selected = compareIds.includes(car.id)
                           const disabled = atMax && !selected
@@ -299,7 +294,6 @@ export default function CarModal({ constructor, onClose }) {
                                 e.currentTarget.style.background = selected ? `rgba(${hexToRgb(car.teamColor)}, 0.12)` : 'transparent'
                               }}
                             >
-                              {/* Checkbox */}
                               <div style={{
                                 width: '14px', height: '14px', borderRadius: '3px', flexShrink: 0,
                                 border: `1px solid ${selected ? car.teamColor : 'rgba(255,255,255,0.2)'}`,
@@ -314,7 +308,6 @@ export default function CarModal({ constructor, onClose }) {
                                 )}
                               </div>
 
-                              {/* Team color dot */}
                               <div style={{
                                 width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0,
                                 background: car.teamColor, boxShadow: `0 0 5px ${car.teamColor}88`,
@@ -367,8 +360,7 @@ export default function CarModal({ constructor, onClose }) {
                 </button>
               </div>
             </div>
-
-            {/* Body */}
+            
             <div style={{
               display: 'grid', gridTemplateColumns: '1fr 1fr',
               flex: 1, overflow: 'hidden',

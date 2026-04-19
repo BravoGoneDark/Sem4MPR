@@ -21,7 +21,7 @@ export default function CarCard({ constructor, onClick }) {
         transform: hovered ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
       }}
     >
-      {/* Background preview image */}
+      {/* BACKGROUND IMAGE */}
       <img
         src={constructor.preview}
         alt={constructor.car}
@@ -37,7 +37,8 @@ export default function CarCard({ constructor, onClick }) {
         }}
       />
 
-      {/* Glassmorphism overlay */}
+      {/* GRADIENT OVERLAY */}
+
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -45,7 +46,6 @@ export default function CarCard({ constructor, onClick }) {
         backdropFilter: 'blur(0px)',
       }} />
 
-      {/* Team color bottom accent bar */}
       <div style={{
         position: 'absolute',
         bottom: 0,
@@ -58,7 +58,7 @@ export default function CarCard({ constructor, onClick }) {
         transition: 'opacity 0.3s ease',
       }} />
 
-      {/* Car name — always visible at bottom */}
+      {/* NAME*/}
       <div style={{
         position: 'absolute',
         bottom: '14px',
@@ -89,7 +89,7 @@ export default function CarCard({ constructor, onClick }) {
         </p>
       </div>
 
-      {/* Logo — fades in on hover, centered */}
+      {/* LOGO */}
       <div style={{
         position: 'absolute',
         inset: 0,

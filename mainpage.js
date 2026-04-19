@@ -1,4 +1,3 @@
-/* Menu Toggle */
     function menuToggle() {
         const menu = document.querySelector('.menu');
         const nav = document.querySelector('.nav');
@@ -6,7 +5,6 @@
         nav.classList.toggle('active');
     }
 
-/* Smooth Scroll */
     function smoothScrollTo(id) {
     const target = document.getElementById(id);
     if (!target) return;
@@ -21,7 +19,6 @@
     return false;
 }
 
-        // Update paragraph text for the selected team
 const paragraphs = {
     redbull: {
         bio:    'Founded in 2005 from the Jaguar Racing entry, Red Bull rose to dominance through Adrian Newey\'s engineering brilliance. Sebastian Vettel delivered four consecutive championship doubles from 2010–2013, before Max Verstappen revived the dynasty with four straight Drivers\' titles from 2021–2024. One of the most successful teams in modern F1 history, Red Bull holds 6 Constructors\' Championships and 8 Drivers\' titles.',
@@ -65,8 +62,6 @@ const paragraphs = {
     }
 }; 
 
-/* Image Change */
-
     function changeImage(name) {
         // Map the incoming name to the image class used in the HTML
         const map = {
@@ -85,8 +80,6 @@ const paragraphs = {
         const key = String(name).toLowerCase();
         const targetImgClass = map[key];
 
-        // Switch background images
-        // Switch background images — CHANGE THIS LINE:
         const bgImages = document.querySelectorAll('#constructors-banner .bg-image-list img');
         bgImages.forEach(img => {
             img.classList.remove('active');
@@ -95,7 +88,6 @@ const paragraphs = {
             }
         });
 
-        // Switch the model headings
         const models = document.querySelectorAll('.model');
         models.forEach(m => {
             m.classList.remove('active');
@@ -132,35 +124,27 @@ const paragraphs = {
         });
     }
 
-    // Wire up after DOM ready — bypasses Materialize event interference
     document.addEventListener('DOMContentLoaded', function() {
 
-        // Card clicks
         ['pitwall', 'models', 'replay'].forEach(function(id) {
             var card = document.getElementById('card-' + id);
             if (!card) return;
             card.addEventListener('click', function(e) {
-                // Don't expand if clicking the close button
                 if (e.target.closest('.card-btn-close')) return;
                 expandCard(id);
             });
         });
 
-        // Close buttons
         document.querySelectorAll('.card-btn-close').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 collapseCards();
             });
         });
-
-        // Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') collapseCards();
         });
     });
-
-    // expose collapseCards globally in case inline onclick still exists anywhere
     window.collapseCards = function(e) {
         if (e && e.stopPropagation) e.stopPropagation();
         collapseCards();
@@ -171,10 +155,8 @@ const paragraphs = {
 /* ── INFO POPUP ── */
 (function () {
 
-    // Inject popup HTML once
     const overlay = document.createElement('div');
     overlay.className = 'info-overlay';
-    // Add logo element to the injected HTML — replace the innerHTML line:
 overlay.innerHTML = `
     <div class="info-popup" id="infoPopup">
         <button class="info-popup-close" id="infoPopupClose">✕ Close</button>
@@ -217,13 +199,11 @@ overlay.innerHTML = `
         locked = false;
     }
 
-    // Close button
     closeBtn.addEventListener('click', function (e) {
         e.stopPropagation();
         closePopup();
     });
 
-    // Click outside popup closes it when locked
     overlay.addEventListener('click', function (e) {
         if (!popup.contains(e.target)) closePopup();
     });
@@ -233,16 +213,12 @@ overlay.innerHTML = `
         if (e.key === 'Escape') closePopup();
     });
 
-    /* ── Wire up each banner button ── */
-
-    // Helper: get currently active text from a banner
     function getActive(selector) {
         const el = document.querySelector(selector + '.active');
         return el ? el.textContent.trim() : '';
     }
 
-    // CONSTRUCTORS — "Enquire" button
-    // CONSTRUCTORS — "Enquire" button
+// CONSTRUCTORS — "Profile" button
 const constructorBtn = document.querySelector('#constructors-content a');
 if (constructorBtn) {
     constructorBtn.addEventListener('click', function (e) {

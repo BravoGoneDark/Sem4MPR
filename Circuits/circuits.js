@@ -1,12 +1,3 @@
-/* ─── circuits.js ────────────────────────────────────────────────────────────
-   Works exactly like changeDriver() but scoped to #circuits-banner.
-
-   HOW TO CUSTOMISE:
-   • Update the keys to match your circuit class names (circuit1, circuit2 …)
-   • Fill in the `name`, `color`, and `bio` for each circuit
-   • Color controls the accent on the h3 heading for that circuit
-──────────────────────────────────────────────────────────────────────────── */
-
 const circuitData = {
     circuit1: {
         name:  'Grand Prix de Monaco',
@@ -75,8 +66,6 @@ function changeCircuit(key) {
     key = String(key).toLowerCase();
     const data = circuitData[key];
     if (!data) return;
-
-    // 1. Swap background image (scoped to circuits banner only)
     const bgImages = document.querySelectorAll('.circuits-bg-image-list img');
     bgImages.forEach(img => {
         img.classList.remove('active');
@@ -85,7 +74,6 @@ function changeCircuit(key) {
         }
     });
 
-    // 2. Swap circuit name heading
     const models = document.querySelectorAll('.circuit-model');
     models.forEach(m => {
         m.classList.remove('active');
@@ -94,12 +82,11 @@ function changeCircuit(key) {
         }
     });
 
-    // 3. Update description paragraph
     const p = document.getElementById('circuits-desc');
     if (p) p.textContent = data.bio;
 }
 
-// Set circuit1 as default on load
+// cIRCUIT 1 DEFAULT
 document.addEventListener('DOMContentLoaded', function () {
     changeCircuit('circuit1');
 });

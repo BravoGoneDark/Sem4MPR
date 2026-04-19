@@ -23,7 +23,6 @@ export default function GarageGrid({ onCardClick }) {
         ))}
       </div>
 
-      {/* 10th card — centered on its own row */}
       <div style={{
         display: 'flex',
         justifyContent: 'center',

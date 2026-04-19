@@ -1,4 +1,3 @@
-// White fire cursor — canvas-based flame particles with tadpole trail
 (function () {
 
   // --- Setup canvas ---
@@ -39,27 +38,23 @@
     dot.style.top = mouseY + 'px';
   }, { passive: true });
 
-  // --- Particle pool ---
   const particles = [];
 
   class Particle {
     constructor() { this.reset(); }
 
     reset() {
-      // spawn at cursor
       this.x = mouseX;
       this.y = mouseY;
 
       const speed = Math.random() * 1.8 + 0.5;
 
-      // Trail direction: opposite to movement (tadpole tail behind cursor)
       const angle = Math.atan2(velY, velX) + Math.PI; // reverse direction
       const spread = (Math.random() - 0.5) * 0.9;     // spread angle
 
       this.vx = Math.cos(angle + spread) * speed + (Math.random() - 0.5) * 0.4;
       this.vy = Math.sin(angle + spread) * speed + (Math.random() - 0.5) * 0.4;
 
-      // If barely moving, spread in a ring (idle flicker)
       const moving = Math.sqrt(velX * velX + velY * velY);
       if (moving < 1.5) {
         const a = Math.random() * Math.PI * 2;
@@ -86,7 +81,6 @@
     draw() {
       const alpha = Math.max(0, this.life);
 
-      // Layered glow: red-white core fading to transparent
       const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
       grad.addColorStop(0,   `rgba(255, 200, 200, ${alpha})`);
       grad.addColorStop(0.3, `rgba(255, 0, 0, ${alpha * 0.85})`);
@@ -100,11 +94,9 @@
     }
   }
 
-  // Pre-fill pool
   const POOL_SIZE = 80;
   for (let i = 0; i < POOL_SIZE; i++) particles.push(new Particle());
 
-  // How many particles to emit per frame (more = denser fire)
   const EMIT_PER_FRAME = 5;
 
   let emitIndex = 0;
@@ -115,7 +107,6 @@
       if (!p.alive) {
         p.reset();
       } else {
-        // Force reset on older particles if pool is full
         if (Math.random() < 0.3) p.reset();
       }
       emitIndex++;

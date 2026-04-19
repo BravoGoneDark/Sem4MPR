@@ -1,9 +1,3 @@
-/* ─── drivers.js ─────────────────────────────────────────────────────────────
-   Works exactly like changeImage() in mainpage.js but scoped to the
-   #drivers-banner section.
-──────────────────────────────────────────────────────────────────────────── */
-
-// ── Driver data — edit these ──────────────────────────────────────────────
 const driverData = {
     driver1: {
         name:  'Max Verstappen',
@@ -67,14 +61,11 @@ const driverData = {
     }
 };
 
-
-// ── changeDriver — mirrors changeImage() pattern exactly ──────────────────
 function changeDriver(key) {
     key = String(key).toLowerCase();
     const data = driverData[key];
     if (!data) return;
 
-    // 1. Swap background image (scoped to drivers banner)
     const bgImages = document.querySelectorAll('.drivers-bg-image-list img');
     bgImages.forEach(img => {
         img.classList.remove('active');
@@ -83,7 +74,6 @@ function changeDriver(key) {
         }
     });
 
-    // 2. Swap driver name heading
     const models = document.querySelectorAll('.driver-model');
     models.forEach(m => {
         m.classList.remove('active');
@@ -92,12 +82,11 @@ function changeDriver(key) {
         }
     });
 
-    // 3. Update bio paragraph
     const p = document.getElementById('drivers-desc');
     if (p) p.textContent = data.bio;
 }
 
-// ── Set driver 1 as default on load ──────────────────────────────────────
+// DRIVER 1 DEFAULT
 document.addEventListener('DOMContentLoaded', function () {
     changeDriver('driver1');
 });

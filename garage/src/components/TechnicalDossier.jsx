@@ -39,7 +39,6 @@ const RADAR_KEYS_B = ['tyreWear', 'corneringSpeed', 'fuelEfficiency', 'reliabili
 
 const MAX_COMPARE = 2
 
-// ── Bar tooltip ───────────────────────────────────────────────────────────────
 const BarTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null
   const d = payload[0].payload
@@ -55,7 +54,6 @@ const BarTooltip = ({ active, payload }) => {
   )
 }
 
-// ── Radar tooltip — shows all active cars ────────────────────────────────────
 const RadarTooltipCustom = ({ active, payload, car, compareCars, statKeys }) => {
   if (!active || !payload?.length) return null
   const point = payload[0]?.payload
@@ -83,7 +81,6 @@ const RadarTooltipCustom = ({ active, payload, car, compareCars, statKeys }) => 
   )
 }
 
-// ── Compare dropdown ─────────────────────────────────────────────────────────
 function CompareDropdown({ car, compareIds, setCompareIds, otherCars }) {
   const [open, setOpen] = useState(false)
 
@@ -100,7 +97,6 @@ function CompareDropdown({ car, compareIds, setCompareIds, otherCars }) {
 
   const clearAll = (e) => { e.stopPropagation(); setCompareIds([]) }
 
-  // Close on outside click
   const ref = (node) => {
     if (!node) return
     const handler = (e) => { if (!node.contains(e.target)) setOpen(false) }
@@ -202,7 +198,7 @@ function CompareDropdown({ car, compareIds, setCompareIds, otherCars }) {
                   onMouseEnter={e => { if (!disabled) e.currentTarget.style.background = `${c.teamColor}12` }}
                   onMouseLeave={e => { e.currentTarget.style.background = selected ? `${c.teamColor}18` : 'transparent' }}
                 >
-                  {/* Checkbox */}
+
                   <div style={{
                     width: '12px', height: '12px', borderRadius: '3px', flexShrink: 0,
                     border: `1px solid ${selected ? c.teamColor : 'rgba(255,255,255,0.2)'}`,
@@ -230,7 +226,8 @@ function CompareDropdown({ car, compareIds, setCompareIds, otherCars }) {
   )
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// TECHNICAL DOSSIER
+
 export default function TechnicalDossier({ constructor: car, onClose }) {
   const [activeIds, setActiveIds] = useState(
     constructors.filter(c => c.id !== car.id).map(c => c.id)
@@ -245,7 +242,6 @@ export default function TechnicalDossier({ constructor: car, onClose }) {
 
   const currentRadarKeys = radarGroup === 'A' ? RADAR_KEYS_A : RADAR_KEYS_B
 
-  // Build radar data — valueA always present, valueB/valueC for compare cars
   const radarData = currentRadarKeys.map((key) => {
     const entryA = normalized[key].find(n => n.id === car.id)
     const entryB = compareCars[0] ? normalized[key].find(n => n.id === compareCars[0].id) : null
@@ -304,14 +300,13 @@ export default function TechnicalDossier({ constructor: car, onClose }) {
             boxShadow: `0 0 120px ${car.teamColor}14, 0 40px 120px rgba(0,0,0,0.95)`,
           }}
         >
-          {/* Noise overlay */}
+
           <div style={{
             position: 'absolute', inset: 0, borderRadius: '20px',
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E")`,
             pointerEvents: 'none', zIndex: 0,
           }} />
 
-          {/* Accent line */}
           <motion.div
             initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -425,13 +420,11 @@ export default function TechnicalDossier({ constructor: car, onClose }) {
               {/* Left — Radar */}
               <div style={{ borderRight: `1px solid rgba(255,255,255,0.05)`, padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', overflow: 'hidden' }}>
 
-                {/* Radar controls row */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
                   <p style={{ fontFamily: 'Orbitron', fontSize: '0.48rem', color: 'rgba(255,255,255,0.28)', letterSpacing: '0.25em', textTransform: 'uppercase' }}>
                     Performance Signature
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {/* Core / Extended toggle */}
                     {[{ key: 'A', label: 'Core' }, { key: 'B', label: 'Extended' }].map(({ key, label }) => (
                       <button key={key} onClick={() => setRadarGroup(key)} style={{
                         fontFamily: 'Orbitron', fontSize: '0.48rem',
@@ -445,9 +438,7 @@ export default function TechnicalDossier({ constructor: car, onClose }) {
                         {label}
                       </button>
                     ))}
-                    {/* Divider */}
                     <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.08)' }} />
-                    {/* Compare dropdown */}
                     <CompareDropdown
                       car={car}
                       compareIds={compareIds}
@@ -457,7 +448,7 @@ export default function TechnicalDossier({ constructor: car, onClose }) {
                   </div>
                 </div>
 
-                {/* Legend when comparing */}
+                {/* Legend */}
                 {hasCompare && (
                   <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', flexShrink: 0 }}>
                     {allActiveCars.map(c => (
@@ -478,7 +469,7 @@ export default function TechnicalDossier({ constructor: car, onClose }) {
                       <PolarAngleAxis dataKey="stat" tick={{ fontFamily: 'Orbitron', fontSize: 8.5, fill: 'rgba(255,255,255,0.48)', letterSpacing: '0.04em' }} />
                       <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
 
-                      {/* Main car — always */}
+                      {/* Car A */}
                       <Radar
                         name={car.car} dataKey="valueA"
                         stroke={car.teamColor} fill={car.teamColor}
@@ -512,7 +503,7 @@ export default function TechnicalDossier({ constructor: car, onClose }) {
                 </div>
               </div>
 
-              {/* Right — Bar chart (unchanged) */}
+              {/* Right — Bar chart */}
               <div style={{ padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', overflow: 'hidden' }}>
                 <div style={{ flexShrink: 0 }}>
                   <p style={{ fontFamily: 'Orbitron', fontSize: '0.48rem', color: 'rgba(255,255,255,0.28)', letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '7px' }}>

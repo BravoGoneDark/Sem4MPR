@@ -8,7 +8,7 @@ export default function App() {
   return (
     <div className="min-h-screen" style={{ position: 'relative' }}>
 
-      {/* Back button */}
+      {/* BACK */}
       <button
   onClick={() => window.location.href = '../../mainpage.html'}
   style={{

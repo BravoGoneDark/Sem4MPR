@@ -1,6 +1,3 @@
-/* #00c2de fire cursor — replaces the default cursor with a canvas flame effect */
-
-/* Force cursor:none on absolutely everything — overrides Materialize's cursor:pointer */
 *, *::before, *::after {
   cursor: none !important;
 }
@@ -19,7 +16,6 @@ html, body {
   z-index: 99999;
 }
 
-/* Tiny dot at exact cursor tip */
 .cursor-dot {
   position: fixed;
   width: 5px;
