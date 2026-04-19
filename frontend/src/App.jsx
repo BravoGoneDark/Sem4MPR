@@ -43,6 +43,13 @@ export default function App() {
   const [hoverIndex, setHoverIndex] = useState(null);
   const [year, setYear] = useState(2024);
   const [activeView, setActiveView] = useState("telemetry");
+
+    useEffect(() => {
+      const params = new URLSearchParams(window.location.search);
+      const view = params.get("view");
+      if (view === "replay") setActiveView("replay");
+    }, []);
+
   const throttleRef = useRef(null);
 
   const onHover = useCallback((index) => {

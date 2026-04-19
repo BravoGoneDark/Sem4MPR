@@ -17,7 +17,7 @@ body{
 
 /* Header */
 
-header{
+header {
     position: absolute;
     left: 0;
     top: 0;
@@ -25,59 +25,59 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 100px;
+    padding: 2vw 6.5vw;
     z-index: 1000;
 }
 
-header::after{
+header::after {
     position: absolute;
     content: '';
-    left:100px;
-    top:50%;
+    left: 6.5vw;
+    top: 50%;
     transform: translateY(-50%);
     height: 5px;
-    width:40%;
-    background: linear-gradient(90deg,var(--primary),transparent);
+    width: 40%;
+    background: linear-gradient(90deg, var(--primary), transparent);
     z-index: -1;
     pointer-events: none;
 }
 
-.logo{
-    font-size: 30px;
+.logo {
+    font-size: 2vw;
     color: #ffffff;
 }
 
-.logo img{
-    max-width: 200px;
+.logo img {
+    max-width: 13vw;
     filter: invert(1);
 }
 
-header .year{
+header .year {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1em;
+    font-size: 0.85vw;
     color: white;
     letter-spacing: 1px;
     font-weight: 800;
-    margin-top: 40px;
+    margin-top: 2.6vw;
 }
 
-header .menu{
+header .menu {
     position: relative;
-    height: 30px;
-    width:30px;
+    height: 2vw;
+    width: 2vw;
     background: url(Images/Screenshot\ 2026-02-18\ 230315.png);
-    background-size: 30px;
+    background-size: 2vw;
     background-position: center;
     filter: invert(1);
     cursor: pointer;
 }
 
-header .menu.active{
+header .menu.active {
     position: relative;
-    height: 30px;
-    width:30px;
+    height: 2vw;
+    width: 2vw;
     background: url(Images/close-line.png);
-    background-size: 30px;
+    background-size: 2vw;
     background-position: center;
     filter: invert(1);
     cursor: pointer;
@@ -85,15 +85,15 @@ header .menu.active{
 
 /* Navigation */
 
-.nav{
+.nav {
     z-index: 1001;
     position: absolute;
-    right: 100px;
+    right: 6.5vw;
     top: 0;
     width: 30%;
     height: 2px;
     border-bottom: 5px solid;
-    border-image: linear-gradient(90deg,transparent,var(--primary),var(--primary))30;
+    border-image: linear-gradient(90deg, transparent, var(--primary), var(--primary)) 30;
     background: transparent;
     box-shadow: 0 0 40px rgba(0,0,0,0.5);
     backdrop-filter: blur(20px);
@@ -104,31 +104,31 @@ header .menu.active{
     transform-origin: right;
 }
 
-.nav.active{
-    top: 130px;
-    width:35%;
-    height: 75px;
+.nav.active {
+    top: 8.5vw;
+    width: 35%;
+    height: 4.9vw;
     border-top: 5px solid;
-    border-image: linear-gradient(90deg,transparent,var(--primary),var(--primary),transparent)30;
+    border-image: linear-gradient(90deg, transparent, var(--primary), var(--primary), transparent) 30;
     border-bottom: none;
 }
 
-.nav li{
+.nav li {
     position: relative;
     list-style: none;
     opacity: 0;
     visibility: hidden;
-    transform:  translateY(-100px);
+    transform: translateY(-100px);
     transition: 0.5s;
 }
 
-.nav.active li{
+.nav.active li {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-.nav li a{
+.nav li a {
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -137,19 +137,19 @@ header .menu.active{
     text-transform: uppercase;
     font-weight: 200;
     letter-spacing: 1px;
-    padding: 5px 20px;
+    padding: 0.35vw 1.3vw;
     transition: 0.2s;
     cursor: pointer;
-    font-size: 1.1em;
+    font-size: 1vw;
 }
 
-.nav li a:hover{
+.nav li a:hover {
     box-shadow: inset 0 0 20px rgba(0, 194, 222, 0.5);
 }
 
 .analytics-nav {
     color: yellow !important;
-    font-size: 0.75em;
+    font-size: 0.75vw;
 }
 
 .analytics-nav:hover {
@@ -313,10 +313,202 @@ header .menu.active{
     letter-spacing: 1px;
     transition: 0.5s;
 }
+/* Banner */
+
+.banner {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 0 6.5vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.banner::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(rgba(0,0,0,0.1),
+    rgba(0,0,0,0.3), rgba(0,0,0,0.6), rgba(0,0,0,0.9));
+}
+
+.banner::before {
+    position: absolute;
+    content: '';
+    top: 25%;
+    left: 0;
+    width: 5px;
+    height: 40%;
+    background: linear-gradient(var(--primary), var(--primary), transparent);
+    z-index: 100;
+}
+
+/* Background Image */
+
+.banner .bg-image-list {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.banner .bg-image-list img {
+    display: none;
+    max-width: 40%;
+    width: auto;
+    height: auto;
+    transition: transform 0.25s ease, max-width 0.25s ease;
+}
+
+.banner .bg-image-list img.active {
+    display: block;
+    transform: scale(1.5);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-redbull.active {
+    transform: scale(2.0);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-mercedes.active {
+    transform: scale(1.5);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-mclaren.active {
+    transform: scale(0.9);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-ferrari.active {
+    transform: scale(0.85);
+    max-width: 75%;
+}
+
+/* Banner Content */
+
+.banner .content {
+    position: relative;
+    max-width: 45vw;
+    padding-bottom: 13vw;
+    z-index: 100;
+    margin-left: 3.25vw;
+}
+
+.banner .content h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4.5vw;
+    color: white;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: 0.13vw;
+    margin-bottom: 1vw;
+    text-transform: uppercase;
+}
+
+.banner .content h3 {
+    display: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2vw;
+    color: var(--primary);
+    font-weight: 300;
+    letter-spacing: 0.065vw;
+    margin-bottom: 1.3vw;
+}
+
+.banner .content h3.active {
+    display: block;
+}
+
+.banner .content p {
+    font-size: 0.95vw;
+    color: #cccccc;
+    line-height: 1.6;
+    max-width: 32.5vw;
+    font-weight: 300;
+}
+
+.banner .content p {
+    color: #ffffff;
+    font-size: 200;
+    letter-spacing: 0.065vw;
+    margin-bottom: 3.25vw;
+}
+
+.banner .content a {
+    position: relative;
+    width: 13vw;
+    color: white;
+    text-decoration: none;
+    padding: 1vw 1.3vw;
+    background: transparent;
+    border-bottom: 3px solid;
+    border-image: linear-gradient(90deg, transparent, var(--primary), var(--primary), transparent) 30;
+    box-shadow: inset 0 0 10px rgba(0,194,222,0.5);
+    backdrop-filter: blur(20px);
+    text-transform: uppercase;
+    font-weight: 300;
+    letter-spacing: 0.065vw;
+    transition: 0.5s;
+}
+
+/* Constructor bg image scales — unchanged, scale() is already relative */
+
+.banner .bg-image-list img.bg-image-williams.active {
+    transform: scale(0.65);
+    max-width: 75%;
+    filter: invert(1);
+    position: absolute;
+    top: -5%;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.banner .bg-image-list img.bg-image-haas.active {
+    transform: scale(0.6);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-alpine.active {
+    transform: scale(0.65);
+    max-width: 75%;
+    filter: invert(1);
+}
+
+.banner .bg-image-list img.bg-image-cadillac.active {
+    transform: scale(0.7);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-astonmartin.active {
+    transform: scale(0.75);
+    max-width: 75%;
+}
+
+.banner .bg-image-list img.bg-image-audi.active {
+    transform: scale(0.55);
+    max-width: 75%;
+}
 
 /* Gallery */
 
-.banner .gallery::before{
+.banner .gallery::before {
     position: absolute;
     content: '';
     left: 0;
@@ -330,7 +522,7 @@ header .menu.active{
 .banner .gallery {
     position: absolute;
     bottom: 0;
-    left: 100px;
+    left: 6.5vw;
     width: 55%;
     height: 34%;
     z-index: 100;
@@ -344,14 +536,14 @@ header .menu.active{
 }
 
 /* Carousel stays overflow:hidden so Materialize works — do NOT change this */
-.banner .gallery .carousel{
+.banner .gallery .carousel {
     width: 100%;
     height: 100%;
     overflow: hidden;
 }
 
-.carousel .carousel-item{
-    width: 250px;
+.carousel .carousel-item {
+    width: 16.25vw;
     cursor: none !important;
 }
 
@@ -360,28 +552,27 @@ header .menu.active{
     background: transparent;
     border-radius: 10px;
     width: 100%;
-    height: 170px;
+    height: 11vw;
     display: block;
 }
 
-.carousel .carousel-item h4{
+.carousel .carousel-item h4 {
     text-align: center;
-    padding: 8px 10px;
-    margin: 6px 0 0 0;
-    font-size: 0.85em;
+    padding: 0.52vw 0.65vw;
+    margin: 0.39vw 0 0 0;
+    font-size: 0.85vw;
     font-weight: 600;
 }
 
-.carousel .carousel-item:nth-child(3) img{
+.carousel .carousel-item:nth-child(3) img {
     object-fit: contain;
 }
-
 /* Drivers banner — taller so background image has room above carousel */
 #drivers-banner {
     min-height: 110vh;
 }
 
-/* ── Section dividers — full width cyan line between each banner ── */
+/* ── Section dividers ── */
 .section-divider {
     width: 100%;
     height: 3px;
@@ -391,46 +582,44 @@ header .menu.active{
     box-shadow: 0 0 18px rgba(0, 194, 222, 0.6), 0 0 40px rgba(0, 194, 222, 0.2);
 }
 
-/* Constructors → Drivers: tight */
 #divider-constructors-drivers {
-    margin-top: 20px;
+    margin-top: 1.3vw;
 }
 
-/* Drivers → Circuits: reduced spacing */
 #divider-drivers-circuits {
-    margin-top: 30px;
+    margin-top: 1.95vw;
 }
 
-/* Drivers gallery — push down from image, no upward blur bleeding */
+/* Drivers gallery */
 #drivers-banner .gallery {
-    bottom: 30px;
+    bottom: 1.95vw;
     height: 22%;
     box-shadow: 0px 10px 40px rgba(0,0,0,0.5);
     backdrop-filter: none;
     background: rgba(0,0,0,0.5);
     top: auto;
-    margin-top: 60px;
+    margin-top: 3.9vw;
 }
 
 #drivers-banner .gallery::before {
     height: 0;
 }
 
-/* Drivers section — .driver-model mirrors .model behaviour */
+/* Driver model label */
 .driver-model {
     display: none;
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.2em;
+    font-size: 1.2vw;
     font-weight: 300;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
+    letter-spacing: 0.065vw;
+    margin-bottom: 1.3vw;
 }
 
 .driver-model.active {
     display: block;
 }
 
-/* Driver background images — portrait photos, scale like constructors */
+/* Driver background images */
 .drivers-bg-image-list img {
     display: none;
     width: auto;
@@ -446,23 +635,24 @@ header .menu.active{
     object-fit: contain;
 }
 
-/* Per-driver scale tweaks */
-.drivers-bg-image-list img.bg-image-driver1.active { transform: scale(0.6); }
-.drivers-bg-image-list img.bg-image-driver2.active { transform: scale(0.6); }
-.drivers-bg-image-list img.bg-image-driver3.active { transform: scale(0.57); }
-.drivers-bg-image-list img.bg-image-driver4.active { transform: scale(0.6); }
-.drivers-bg-image-list img.bg-image-driver5.active { transform: scale(0.6); }
-.drivers-bg-image-list img.bg-image-driver6.active { transform: scale(0.85); }
-.drivers-bg-image-list img.bg-image-driver7.active { transform: scale(0.6); }
-.drivers-bg-image-list img.bg-image-driver8.active  { transform: scale(1); }
-.drivers-bg-image-list img.bg-image-driver9.active  { transform: scale(1); }
+/* Per-driver scale tweaks — scale() is already relative, left untouched */
+.drivers-bg-image-list img.bg-image-driver1.active  { transform: scale(0.6);  }
+.drivers-bg-image-list img.bg-image-driver2.active  { transform: scale(0.6);  }
+.drivers-bg-image-list img.bg-image-driver3.active  { transform: scale(0.57); }
+.drivers-bg-image-list img.bg-image-driver4.active  { transform: scale(0.6);  }
+.drivers-bg-image-list img.bg-image-driver5.active  { transform: scale(0.6);  }
+.drivers-bg-image-list img.bg-image-driver6.active  { transform: scale(0.85); }
+.drivers-bg-image-list img.bg-image-driver7.active  { transform: scale(0.6);  }
+.drivers-bg-image-list img.bg-image-driver8.active  { transform: scale(1);    }
+.drivers-bg-image-list img.bg-image-driver9.active  { transform: scale(1);    }
 .drivers-bg-image-list img.bg-image-driver10.active { transform: scale(1.05); }
 
 .carousel-zoom-out {
     object-fit: contain !important;
     background: transparent;
 }
-/* ── Circuits Banner ─────────────────────────────────────────────────────── */
+
+/* ── Circuits Banner ── */
 
 #circuits-banner {
     min-height: 130vh;
@@ -484,10 +674,10 @@ header .menu.active{
 .circuit-model {
     display: none;
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.2em;
+    font-size: 1.2vw;
     font-weight: 300;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
+    letter-spacing: 0.065vw;
+    margin-bottom: 1.3vw;
 }
 
 .circuit-model.active {
@@ -509,14 +699,14 @@ header .menu.active{
     object-fit: contain;
 }
 
-/* Per-circuit scale tweaks */
-.circuits-bg-image-list img.bg-image-circuit1.active { transform: scale(0.7); }
-.circuits-bg-image-list img.bg-image-circuit2.active { transform: scale(0.7); }
-.circuits-bg-image-list img.bg-image-circuit3.active { transform: scale(0.75); }
-.circuits-bg-image-list img.bg-image-circuit4.active { transform: scale(0.8); }
-.circuits-bg-image-list img.bg-image-circuit5.active { transform: scale(0.7); }
-.circuits-bg-image-list img.bg-image-circuit6.active { transform: scale(0.95); }
-.circuits-bg-image-list img.bg-image-circuit7.active { transform: scale(0.7); }
+/* Per-circuit scale tweaks — scale() already relative, untouched */
+.circuits-bg-image-list img.bg-image-circuit1.active  { transform: scale(0.7);  }
+.circuits-bg-image-list img.bg-image-circuit2.active  { transform: scale(0.7);  }
+.circuits-bg-image-list img.bg-image-circuit3.active  { transform: scale(0.75); }
+.circuits-bg-image-list img.bg-image-circuit4.active  { transform: scale(0.8);  }
+.circuits-bg-image-list img.bg-image-circuit5.active  { transform: scale(0.7);  }
+.circuits-bg-image-list img.bg-image-circuit6.active  { transform: scale(0.95); }
+.circuits-bg-image-list img.bg-image-circuit7.active  { transform: scale(0.7);  }
 .circuits-bg-image-list img.bg-image-circuit8.active  { transform: scale(0.75); }
 .circuits-bg-image-list img.bg-image-circuit9.active  { transform: scale(0.72); }
 .circuits-bg-image-list img.bg-image-circuit10.active { transform: scale(0.85); }
@@ -536,85 +726,47 @@ header .menu.active{
 
 /* Social Media Icons */
 
-.social{
+.social {
     position: fixed;
     top: 50%;
-    right: 100px;
+    right: 6.5vw;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 1.3vw;
     list-style: none;
     z-index: 100;
 }
 
-.social li{
+.social li {
     list-style: none;
 }
 
-.social li a{
+.social li a {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 45px;
-    height: 45px;
+    width: 2.9vw;
+    height: 2.9vw;
     border-radius: 50%;
     background: transparent;
     border: 2px solid var(--primary);
     color: var(--primary);
-    font-size: 1.2em;
+    font-size: 1.2vw;
     transition: 0.3s;
     cursor: pointer;
 }
 
-.social li a:hover{
+.social li a:hover {
     background: var(--primary);
     color: black;
     box-shadow: 0 0 20px rgba(0, 194, 222, 0.5);
 }
 
-/* Invert white-background logos to show on dark theme */
 .invert-logo {
     filter: invert(1);
-}
-
-/* New constructor bg image scales */
-.banner .bg-image-list img.bg-image-williams.active {
-    transform: scale(0.65);
-    max-width: 75%;
-    filter: invert(1);
-    position: absolute;
-    top: -5%;
-    left: 50%;
-    translate: -50% 0;
-}
-
-.banner .bg-image-list img.bg-image-haas.active {
-    transform: scale(0.6);
-    max-width: 75%;
-}
-
-.banner .bg-image-list img.bg-image-alpine.active {
-    transform: scale(0.65);
-    max-width: 75%;
-    filter: invert(1);    
-}
-
-.banner .bg-image-list img.bg-image-cadillac.active {
-    transform: scale(0.7);
-    max-width: 75%;
-}
-
-.banner .bg-image-list img.bg-image-astonmartin.active {
-    transform: scale(0.75);
-    max-width: 75%;
-}
-
-.banner .bg-image-list img.bg-image-audi.active {
-    transform: scale(0.55);
-    max-width: 75%;
 }
 
 /* ── THE PADDOCK GRID ── */
