@@ -42,7 +42,7 @@
   align-items: center;
   justify-content: center;
   height: 200px;
-  color: #333;
+  color: #939090;
   font-family: 'Orbitron', monospace;
   font-size: 12px;
   letter-spacing: 1px;
@@ -103,7 +103,7 @@
 .replay-info-item {
   font-family: 'Orbitron', monospace;
   font-size: 11px;
-  color: #555;
+  color: #a19c9c;
   letter-spacing: 1px;
 }
 
@@ -122,8 +122,8 @@
 
 .replay-weather {
   margin-left: auto;
-  color: #444 !important;
-  font-size: 10px !important;
+  color: #9f9595 !important;
+  font-size: 12px !important;
 }
 
 /* Layout: canvas + right panel */
@@ -261,7 +261,7 @@
 .replay-time-display {
   font-family: 'Orbitron', monospace;
   font-size: 11px;
-  color: #444;
+  color: #a8a0a0;
   margin-left: auto;
   letter-spacing: 1px;
 }
@@ -407,8 +407,8 @@
 
 .lb-lap {
   font-family: monospace;
-  font-size: 10px;
-  color: #333;
+  font-size: 11px;
+  color: #979090;
 }
 
 /* Keyboard hints */
@@ -424,8 +424,8 @@
 
 .replay-hints div {
   font-family: monospace;
-  font-size: 10px;
-  color: #2a2a2a;
+  font-size: 12px;
+  color: #a29999;
 }
 
 .replay-lb-row.dnf {
