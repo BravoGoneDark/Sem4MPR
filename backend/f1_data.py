@@ -394,6 +394,52 @@ def get_replay_data(year: int, round_number: int, session_type: str = "R"):
         if dnf_frame:
             print(f"  DNF detected: {code} at frame {dnf_frame} ({dnf_frame/REPLAY_FPS:.0f}s)")
 
+    
+    # ── pit stop counts per frame ─────────────────────────────────────────────
+    for driver_no in session.drivers:
+        try:
+            code = session.get_driver(driver_no)["Abbreviation"]
+            if code not in resampled:
+                continue
+            laps_driver = session.laps.pick_drivers(driver_no)
+            
+            # Get pit in times
+            pit_laps = laps_driver[laps_driver["PitInTime"].notna()]["PitInTime"]
+            pit_times = (pit_laps.dt.total_seconds() - global_t_min).tolist()
+            
+            # For each frame count how many pits have happened
+            pit_counts = []
+            for t in timeline:
+                count = sum(1 for pt in pit_times if pt <= t)
+                pit_counts.append(count)
+            
+            resampled[code]["pits"] = pit_counts
+        except Exception as e:
+            print(f"Pit data error for {code}: {e}")
+            resampled[code]["pits"] = [0] * n
+    
+
+    # ── gap to leader per frame ───────────────────────────────────────────────
+    for i in range(n):
+        # Find leader at this frame
+        leader = min(drivers_list, 
+                    key=lambda c: resampled[c]["pos"][i] if "pos" in resampled[c] else 99)
+        leader_dist = resampled[leader]["dist"][i]
+        leader_spd  = max(resampled[leader]["spd"][i], 1)  # avoid division by zero
+        
+        for code in drivers_list:
+            if "gap" not in resampled[code]:
+                resampled[code]["gap"] = [0.0] * n
+            
+            if code == leader:
+                resampled[code]["gap"][i] = 0.0
+            else:
+                dist_diff = leader_dist - resampled[code]["dist"][i]
+                # Convert distance gap to time gap using leader's speed (km/h → m/s)
+                speed_ms = leader_spd / 3.6
+                resampled[code]["gap"][i] = round(dist_diff / speed_ms, 1) if speed_ms > 0 else 0.0
+
+
     # ── track status (SC / VSC / red flag) ───────────────────────────────────
     track_statuses = []
     STATUS_LABEL = {"1": "clear", "2": "yellow", "4": "sc", "5": "red", "6": "vsc"}

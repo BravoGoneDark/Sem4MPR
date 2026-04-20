@@ -473,3 +473,18 @@
     linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+
+.lb-pits {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  color: #54b0e1;
+  width: 20px;
+  text-align: center;
+}
+
+.lb-gap {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  min-width: 45px;
+  text-align: right;
+}

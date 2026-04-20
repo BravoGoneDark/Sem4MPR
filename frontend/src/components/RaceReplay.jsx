@@ -197,7 +197,7 @@ export default function RaceReplay({ year, round }) {
     const drivers = data.drivers;
 
   const lb = drivers
-    .map(code => {
+  .map(code => {
       const dnfFrame = data.dnfFrames?.[code];
       const isDNF = dnfFrame !== null && dnfFrame !== undefined && fi >= dnfFrame;
       return {
@@ -205,6 +205,8 @@ export default function RaceReplay({ year, round }) {
         pos:  Math.round(frames[code]?.pos?.[fi] ?? 99),
         lap:  Math.round(frames[code]?.lap?.[fi]  ?? 0),
         tyre: Math.round(frames[code]?.tyre?.[fi] ?? 0),
+        pits: Math.round(frames[code]?.pits?.[fi] ?? 0),
+        gap:  frames[code]?.gap?.[fi] ?? 0,
         dnf:  isDNF,
       };
     })
@@ -546,33 +548,37 @@ export default function RaceReplay({ year, round }) {
               <div className="replay-leaderboard">
                 <div className="replay-lb-title">LEADERBOARD</div>
                   {leaderboard.map((entry) => {
-                    const color = data.driverColors[entry.code] || "#888";
-                    return (
-                      <button
-                        key={entry.code}
-                        className={`replay-lb-row ${selectedDriver === entry.code ? "selected" : ""} ${entry.dnf ? "dnf" : ""}`}
-                        onClick={() => setSelectedDriver(
-                          prev => prev === entry.code ? null : entry.code
-                        )}
-                        style={selectedDriver === entry.code
-                          ? { background:`${color}22`, borderLeft:`3px solid ${color}` }
-                          : {}}
-                      >
-                        <span className="lb-pos" style={{ color: entry.dnf ? "#dfbdbde6" : "#d5ceceb7" }}>
-                          {entry.dnf ? "OUT " : entry.pos}
-                        </span>
-                        <span className="lb-code" style={{ color: entry.dnf ? "#dfbdbde6" : color }}>
-                          {entry.code}
-                        </span>
-                        <span className="lb-tyre" style={{ color: entry.dnf ? "#dfbdbde6" : TYRE_COLOR[entry.tyre] }}>
-                          {entry.dnf ? "—" : TYRE_NAME[entry.tyre]}
-                        </span>
-                        <span className="lb-lap" style={{ color: entry.dnf ? "#dfbdbde6" : "" }}>
-                          {entry.dnf ? "DNF" : `L${entry.lap}`}
-                        </span>
-                      </button>
-                    );
-                  })}
+                  const color = data.driverColors[entry.code] || "#888";
+                  const isLeader = entry.pos === 1;
+                  return (
+                    <button
+                      key={entry.code}
+                      className={`replay-lb-row ${selectedDriver === entry.code ? "selected" : ""} ${entry.dnf ? "dnf" : ""}`}
+                      onClick={() => setSelectedDriver(
+                        prev => prev === entry.code ? null : entry.code
+                      )}
+                      style={selectedDriver === entry.code
+                        ? { background:`${color}22`, borderLeft:`3px solid ${color}` }
+                        : {}}
+                    >
+                      <span className="lb-pos" style={{ color: entry.dnf ? "#e5bcbce9" : "#ddd" }}>
+                        {entry.dnf ? "OUT" : entry.pos}
+                      </span>
+                      <span className="lb-code" style={{ color: entry.dnf ? "#e5bcbce9" : color }}>
+                        {entry.code}
+                      </span>
+                      <span className="lb-tyre" style={{ color: entry.dnf ? "#e5bcbce9" : TYRE_COLOR[entry.tyre] }}>
+                        {entry.dnf ? "—" : TYRE_NAME[entry.tyre]}
+                      </span>
+                      <span className="lb-pits" style={{ color: "#54b0e1" }}>
+                        {entry.dnf ? "" : `P${entry.pits}`}
+                      </span>
+                      <span className="lb-gap" style={{ color: entry.dnf ? "#e5bcbce9" : isLeader ? "#e8002d" : "#aaa" }}>
+                        {entry.dnf ? "DNF" : isLeader ? "LEAD" : `+${entry.gap}s`}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
 
               <div className="replay-hints">
